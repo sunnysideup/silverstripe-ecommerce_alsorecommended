@@ -62,7 +62,7 @@ class RecommendedProductsModifier extends OrderModifier {
 
 //-------------------------------------------------------------------- ***  database functions
 
-	function IsNoChange() {
+	public function IsNoChange() {
 		return true;
 	}
 
