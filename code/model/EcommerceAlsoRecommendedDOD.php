@@ -8,7 +8,11 @@ class EcommerceAlsoRecommendedDOD extends DataObjectDecorator {
 		return array (
 			'many_many' => array(
 				'EcommerceRecommendedProducts' => 'Product'
-			)
+			),
+			'belongs_many_many' => array(
+				'RecommendedFor' => 'Product'
+			),
+			
 		);
 	}
 
