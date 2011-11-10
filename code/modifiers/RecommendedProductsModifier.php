@@ -39,7 +39,7 @@ class RecommendedProductsModifier extends OrderModifier {
 
 
 // -------------------------------------------------------------------- *** table values
-	function LiveCalculationValue() {
+	function LiveCalculatedTotal() {
 		return 0;
 	}
 	function TableValue() {
