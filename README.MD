@@ -1,23 +1,31 @@
 ###############################################
-Ecommerce ALSO RECOMMENDED
+ecommerce also recommended
 Pre 0.1 proof of concept
 ###############################################
 
-Developer
+This module adds the "also recommended" feature
+to e-commerce.  For example, when a customer
+purchases a laptop, this module could recommend the
+customer to add an extended warranty.
+
+
+Developers
 -----------------------------------------------
 Nicolaas Francken [at] sunnysideup.co.nz
 
+
 Requirements
 -----------------------------------------------
+Ecommerce 1.0+ / SSU Branch
 SilverStripe 2.4+
 
-Documentation
+Project Home
 -----------------------------------------------
-see:
-http://silverstripe-webdevelopment.com/ecommerce_alsorecommended
+See http://code.google.com/p/silverstripe-ecommerce
 
-
-
+Demo
+-----------------------------------------------
+See http://www.silverstripe-ecommerce.com
 
 Installation Instructions
 -----------------------------------------------
@@ -30,7 +38,3 @@ it from your mysite folder, so that you can upgrade the module without redoing t
 If you just want one or two things from this module
 then of course you are free to copy them to your
 mysite folder and delete the rest of this module.
-
-
-
-
