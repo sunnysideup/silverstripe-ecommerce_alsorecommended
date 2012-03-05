@@ -15,6 +15,13 @@ class RecommendedProductsModifier extends OrderModifier {
 
 	static $db = array();
 
+
+	public static $singular_name = "Recommended Products";
+		function i18n_singular_name() { return _t("RecommendedProductsModifier.RECOMMENDEDPRODUCTSMODIFIER", "Recommended Products");}
+
+	public static $plural_name = "Recommended Products";
+		function i18n_plural_name() { return _t("RecommendedProductsModifier.RECOMMENDEDPRODUCTSMODIFIER", "Recommended Products");}
+
 //--------------------------------------------------------------------  *** static functions
 	public function showForm() {
 		return true;
