@@ -1,2 +1,2 @@
-#Checkout #RecommendedProductsModifier_Form_RecommendedProducts p.checkbox{ border-bottom: 7px solid transparent;}
-#Checkout #RecommendedProductsModifier_Form_RecommendedProducts p.willBeAddedToCart{ border-bottom: 7px solid grey;}
+#Checkout .recommendedProducts p.checkbox{ border-bottom: 7px solid transparent;}
+#Checkout .recommendedProducts p.willBeAddedToCart{ border-bottom: 7px solid grey;}
