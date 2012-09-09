@@ -23,7 +23,7 @@ class RecommendedProductsModifier extends OrderModifier {
 		function i18n_plural_name() { return _t("RecommendedProductsModifier.RECOMMENDEDPRODUCTSMODIFIER", "Recommended Products");}
 
 //--------------------------------------------------------------------  *** static functions
-	public function showForm() {
+	public function ShowForm() {
 		return true;
 	}
 
