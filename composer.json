@@ -1,5 +1,5 @@
 {
-	"name": "silverstripe/ecommerce_alsorecommended",
+	"name": "sunnysideup/ecommerce_alsorecommended",
 	"type": "silverstripe-module",
 	"description": "adds 'also recommended is ...' to e-commerce ",
 	"homepage": "http://www.silverstripe-ecommerce.com",
