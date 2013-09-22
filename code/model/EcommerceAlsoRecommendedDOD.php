@@ -2,32 +2,28 @@
 
 
 
-class EcommerceAlsoRecommendedDOD extends DataObjectDecorator {
+class EcommerceAlsoRecommendedDOD extends DataExtension {
 
-	public function extraStatics() {
-		return array (
-			'many_many' => array(
-				'EcommerceRecommendedProducts' => 'Product'
-			),
-			'belongs_many_many' => array(
-				'RecommendedFor' => 'Product'
-			),
+	private static $many_many = array('EcommerceRecommendedProducts' => 'Product');
 
-		);
-	}
+	private static $belongs_many_many => array('RecommendedFor' => 'Product');
 
-	function updateCMSFields(FieldSet &$fields) {
+	function updateCMSFields(FieldList $fields) {
 		if($this->owner instanceOf Product) {
 			$field = new TreeMultiselectField ("EcommerceRecommendedProducts", "Recommended Products", $sourceObject = "SiteTree", $keyField = "ID", $labelField = "Title");
 			$filter = create_function('$obj', 'return ( ( $obj InstanceOf Product || $obj InstanceOf ProductGroup) && ($obj->ID != '.$this->owner->ID.'));');
 			$field->setFilterFunction($filter);
-			$fields->addFieldToTab('Root.Content.RecommendedProducts', $field);
+			$fields->addFieldToTab('Root.RecommendedProducts', $field);
 		}
 	}
 
-	function onBeforeWrite(){
+	/**
+	 *
+	 * small cleanup
+	 */
+	function onAfterWrite(){
 		$products = $this->owner->EcommerceRecommendedProducts();
-		if($products) {
+		if($products && $products->count()) {
 			foreach($products as $product) {
 				if(!$product instanceOf Product) {
 					$products->remove($product);

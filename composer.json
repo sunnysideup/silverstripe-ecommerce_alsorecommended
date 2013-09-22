@@ -3,7 +3,7 @@
 	"type": "silverstripe-module",
 	"description": "adds 'also recommended is ...' to e-commerce ",
 	"homepage": "http://www.silverstripe-ecommerce.com",
-	"keywords": ["ecommerce", "e-commerce", "shop", "also recommended", "silverstripe"],
+	"keywords": ["ecommerce", "e-commerce", "shop", "also recommended", "silverstripe", "recommendations", "accessoires"],
 	"license": "Sunny Side Up (BSD-3-Clause and CUSTOM)",
 	"authors":[
 		{
@@ -14,8 +14,6 @@
 		}
 	],
 	"require":{
-		"php": ">=5.3.2",
-		"silverstripe/framework": "~2.4",
-		"sunnysideup/ecommerce": "~2.4"
+		"silverstripe/ecommerce": "dev-master"
 	}
 }
