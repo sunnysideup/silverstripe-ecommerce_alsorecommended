@@ -6,7 +6,7 @@ class EcommerceAlsoRecommendedDOD extends DataExtension {
 
 	private static $many_many = array('EcommerceRecommendedProducts' => 'Product');
 
-	private static $belongs_many_many => array('RecommendedFor' => 'Product');
+	private static $belongs_many_many = array('RecommendedFor' => 'Product');
 
 	function updateCMSFields(FieldList $fields) {
 		if($this->owner instanceOf Product) {
