@@ -111,11 +111,11 @@ class RecommendedProductsModifier_Form extends Form {
 			Requirements::themedCSS("RecommendedProductsModifier");
 			$fieldsArray[] = new HeaderField(self::$something_recommended_text);
 			foreach($recommendedProductsIDArray as $ID) {
-				$product = DataObject::get_by_id("Product", $ID);
+				$product = Product::get()->byID($ID);
 				//foreach product in cart get recommended products
 				$imageID = $product->ImageID;
 				$imagePart = '';
-				if($product->ImageID > 0) {
+				if($product && $product->ImageID > 0) {
 					$resizedImage = $product->Image()->SetWidth($this->Config()->get("image_width"));
 					if(is_object($resizedImage) && $resizedImage) {
 						$imageLink = $resizedImage->Filename;
@@ -153,8 +153,9 @@ class RecommendedProductsModifier_Form extends Form {
 			}
 		}
 		if(is_array($URLSegments) && count($URLSegments)) {
-			$itemsToAdd = Product::get()->filter("ID", $ids);
-			if($itemsToAdd) {
+			$itemsToAdd = Product::get()
+				->filter("ID", $ids);
+			if($itemsToAdd->count()) {
 				foreach($itemsToAdd as $item) {
 					ShoppingCart::add_new_item(new self::$order_item_classname($item));
 				}
