@@ -108,7 +108,7 @@ class RecommendedProductsModifier_Form extends Form {
 			//Requirements::block(THIRDPARTY_DIR."/jquery/jquery.js");
 			//Requirements::javascript(Director::protocol()."ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js");
 			Requirements::javascript("ecommerce_alsorecommended/javascript/RecommendedProductsModifier.js");
-			Requirements::themedCSS("RecommendedProductsModifier");
+			Requirements::themedCSS("RecommendedProductsModifier", "ecommerce_alsrecommended");
 			$fieldsArray[] = new HeaderField(self::$something_recommended_text);
 			foreach($recommendedProductsIDArray as $ID) {
 				$product = Product::get()->byID($ID);
