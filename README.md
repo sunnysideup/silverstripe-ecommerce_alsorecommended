@@ -1,7 +1,6 @@
-###############################################
+
 ecommerce also recommended
-Pre 0.1 proof of concept
-###############################################
+================================================================================
 
 This module adds the "also recommended" feature
 to e-commerce.  For example, when a customer
