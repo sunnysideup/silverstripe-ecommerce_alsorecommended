@@ -1,3 +1,6 @@
 Product:
   extensions:
     - EcommerceAlsoRecommendedDOD
+
+# do not forget to add the RecommendedProductsModifier to the array of modifers, in case you want to use it.
+
