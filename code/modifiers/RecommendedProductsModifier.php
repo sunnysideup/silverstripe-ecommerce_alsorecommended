@@ -109,7 +109,7 @@ class RecommendedProductsModifier_Form extends Form {
 			//Requirements::javascript(Director::protocol()."ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js");
 			Requirements::javascript("ecommerce_alsorecommended/javascript/RecommendedProductsModifier.js");
 			Requirements::themedCSS("RecommendedProductsModifier", "ecommerce_alsrecommended");
-			$fieldsArray[] = new HeaderField(self::$something_recommended_text);
+			$fieldsArray[] = new HeaderField($this->config()->get("something_recommended_text"));
 			foreach($recommendedProductsIDArray as $ID) {
 				$product = Product::get()->byID($ID);
 				//foreach product in cart get recommended products
@@ -131,7 +131,7 @@ class RecommendedProductsModifier_Form extends Form {
 				$newField = new CheckboxField($product->ID, $title);
 				$fieldsArray[] = $newField;
 			}
-			$actions = new FieldList(new FormAction('processOrder', self::$add_button_text));
+			$actions = new FieldList(new FormAction('processOrder', $this->config()->get("add_button_text")));
 		}
 		else {
 			$actions = new FieldList();
@@ -157,7 +157,8 @@ class RecommendedProductsModifier_Form extends Form {
 				->filter("ID", $ids);
 			if($itemsToAdd->count()) {
 				foreach($itemsToAdd as $item) {
-					ShoppingCart::add_new_item(new self::$order_item_classname($item));
+					$order_item_classname = $this->config()->get("order_item_classname");
+					ShoppingCart::add_new_item(new $order_item_classname($item));
 				}
 			}
 		}
