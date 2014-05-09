@@ -19,12 +19,65 @@ class RecommendedProductsModifier extends OrderModifier {
 		function i18n_plural_name() { return _t("RecommendedProductsModifier.PLURAL_NAME", "Recommended Products");}
 
 //--------------------------------------------------------------------  *** static functions
+// ######################################## *** form functions (e. g. Showform and getform)
+
+
+	protected $recommendedBuyables = null;
+
+	/**
+	 * standard Modifier Method
+	 * @return Boolean
+	 */
 	public function ShowForm() {
-		return true;
+		if(!$this->recommendedBuyables) {
+			$this->recommendedBuyables = new ArrayList();
+			$inCartIDArray = array();
+			if($items = $this->Order()->Items()) {
+				foreach($items as $item) {
+					$buyable = $item->Buyable();
+					if($buyable instanceof Product) {
+						$codeOfBuyable = $buyable->ClassName.".".$buyable->ID;
+						$inCartIDArray[$codeOfBuyable] = $codeOfBuyable;
+					}
+				}
+				foreach($items as $item) {
+					//get recommended products
+					if($item) {
+						$buyable = $item->Buyable();
+						if($buyable instanceof Product) {
+							unset($recommendedProducts);
+							$recommendedProducts = $buyable->EcommerceRecommendedProducts();
+							foreach($recommendedProducts as $recommendedProduct) {
+								$codeOfRecommendedProduct = $recommendedProduct->ClassName.".".$recommendedProduct->ID;
+								if(!in_array($codeOfRecommendedProduct, $inCartIDArray)) {
+									$this->recommendedBuyables->push($recommendedProduct);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		return $this->recommendedBuyables->count();
 	}
 
-	static function get_form($controller) {
-		return new RecommendedProductsModifier_Form($controller, 'RecommendedProducts');
+	/**
+	 * Should the form be included in the editable form
+	 * on the checkout page?
+	 * @return Boolean
+	 */
+	public function ShowFormInEditableOrderTable() {
+		return false;
+	}
+
+	/**
+	 *
+	 * @return Form
+	 */
+	function getModifierForm(Controller $optionalController = null, Validator $optionalValidator = null) {
+		if($this->ShowForm()) {
+			return new RecommendedProductsModifier_Form($optionalController, 'RecommendedProducts', null, null, $optionalValidator, $this->recommendedBuyables);
+		}
 	}
 
 //-------------------------------------------------------------------- *** display functions
@@ -47,7 +100,7 @@ class RecommendedProductsModifier extends OrderModifier {
 
 //-------------------------------------------------------------------- *** table titles
 	function LiveName() {
-		return "Recommended Products";
+		return $this->i18n_singular_name();
 	}
 
 	function Name() {
@@ -61,13 +114,10 @@ class RecommendedProductsModifier extends OrderModifier {
 
 //-------------------------------------------------------------------- ***  database functions
 
-	public function IsNoChange() {
-		return true;
-	}
 
 }
 
-class RecommendedProductsModifier_Form extends Form {
+class RecommendedProductsModifier_Form extends OrderModifierForm {
 
 	private static $image_width = 100;
 
@@ -77,98 +127,70 @@ class RecommendedProductsModifier_Form extends Form {
 
 	private static $order_item_classname = "Product_OrderItem";
 
-	function __construct($controller, $name) {
-		$InCartIDArray = array();
-		$recommendedProductsIDArray = array();
-		$fieldsArray = array();
-		if($items = ShoppingCart::get_items()) {
-			foreach($items as $item) {
-				$id = $item->Product()->ID;
-				$InCartIDArray[$id] = $id;
-			}
-			foreach($items as $item) {
-				//get recommended products
-				if($item) {
-					$product = $item->Product();
-					if($product) {
-						unset($recommendedProducts);
-						$recommendedProducts = array();
-						$recommendedProducts = $product->EcommerceRecommendedProducts();
-						foreach($recommendedProducts as $recommendedProduct) {
-							if(!in_array($recommendedProduct->ID, $InCartIDArray)) {
-								$recommendedProductsIDArray[$recommendedProduct->ID] = $recommendedProduct->ID;
-							}
-						}
-					}
+	function __construct($optionalController = null, $name, FieldList $fields, FieldList $actions, $optionalValidator = null, $recommendedBuyables) {
+		$fieldsArray = new FieldList(array(new HeaderField($this->config()->get("something_recommended_text"))));
+		foreach($recommendedBuyables as $buyable) {
+			//foreach product in cart get recommended products
+			$imageID = $buyable->ImageID;
+			$imagePart = '';
+			if($buyable && $buyable->ImageID > 0) {
+				$resizedImage = $buyable->Image()->SetWidth($this->Config()->get("image_width"));
+				if(is_object($resizedImage) && $resizedImage) {
+					$imageLink = $resizedImage->Filename;
+					$imagePart = '<span class="secondPart"><img src="'.$imageLink.'" alt="'.Convert::raw2att($buyable->Title).'" /></span>';
 				}
 			}
-		}
-		if(count($recommendedProductsIDArray)) {
-			Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
-			//Requirements::block(THIRDPARTY_DIR."/jquery/jquery.js");
-			//Requirements::javascript(Director::protocol()."ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js");
-			Requirements::javascript("ecommerce_alsorecommended/javascript/RecommendedProductsModifier.js");
-			Requirements::themedCSS("RecommendedProductsModifier", "ecommerce_alsrecommended");
-			$fieldsArray[] = new HeaderField($this->config()->get("something_recommended_text"));
-			foreach($recommendedProductsIDArray as $ID) {
-				$product = Product::get()->byID($ID);
-				//foreach product in cart get recommended products
-				$imageID = $product->ImageID;
-				$imagePart = '';
-				if($product && $product->ImageID > 0) {
-					$resizedImage = $product->Image()->SetWidth($this->Config()->get("image_width"));
-					if(is_object($resizedImage) && $resizedImage) {
-						$imageLink = $resizedImage->Filename;
-						$imagePart = '<span class="secondPart"><img src="'.$imageLink.'" alt="'.Convert::raw2att($product->Title).'" /></span>';
-					}
-				}
-				if(!$imagePart) {
-					$imagePart = '<span class="secondPart noImage">[no image available for '.$product->Title.']</span>';
-				}
-				$priceAsMoney = EcommerceCurrency::get_money_object_from_order_currency($product->calculatedPrice());
-				$pricePart = '<span class="firstPart">'.$priceAsMoney->Nice().'</span>';
-				$title = '<a href="'.$product->Link().'">'.$product->Title.'</a>'.$pricePart.$imagePart.'';
-				$newField = new CheckboxField($product->ID, $title);
-				$fieldsArray[] = $newField;
+			if(!$imagePart) {
+				$imagePart = '<span class="secondPart noImage">[no image available for '.$buyable->Title.']</span>';
 			}
-			$actions = new FieldList(new FormAction('processOrder', $this->config()->get("add_button_text")));
+			$priceAsMoney = EcommerceCurrency::get_money_object_from_order_currency($buyable->calculatedPrice());
+			$pricePart = '<span class="firstPart">'.$priceAsMoney->Nice().'</span>';
+			$title = '<a href="'.$buyable->Link().'">'.$buyable->Title.'</a>'.$pricePart.$imagePart.'';
+			$newField = new CheckboxField($buyable->ClassName."|".$buyable->ID, $title);
+			$fieldsArray->push($newField);
 		}
-		else {
-			$actions = new FieldList();
-		}
-		$requiredFields = null;
-		// 3) Put all the fields in one FieldSet
-		$fields = new FieldList($fieldsArray);
-
+		$actions = new FieldList(new FormAction('processOrderModifier', $this->config()->get("add_button_text")));
 		// 6) Form construction
-		return parent::__construct($controller, $name, $fields, $actions, $requiredFields);
+		parent::__construct($optionalController, $name, $fieldsArray, $actions, $optionalValidator);
+		Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
+		//Requirements::block(THIRDPARTY_DIR."/jquery/jquery.js");
+		//Requirements::javascript(Director::protocol()."ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js");
+		Requirements::javascript("ecommerce_alsorecommended/javascript/RecommendedProductsModifier.js");
+		Requirements::themedCSS("RecommendedProductsModifier", "ecommerce_alsrecommended");
 	}
 
-	public function processOrder($data, $form) {
-		$items = ShoppingCart::get_items();
-		$URLSegments = array();
+	public function processOrderModifier($data, $form) {
+		$count = 0;
+		$error = 0;
 		foreach($data as $key => $value) {
-			if(1 == $value) {
-				$ids[$id] = inval($key);
-			}
-		}
-		if(is_array($URLSegments) && count($URLSegments)) {
-			$itemsToAdd = Product::get()
-				->filter("ID", $ids);
-			if($itemsToAdd->count()) {
-				foreach($itemsToAdd as $item) {
-					$order_item_classname = $this->config()->get("order_item_classname");
-					ShoppingCart::add_new_item(new $order_item_classname($item));
+			if($value == 1) {
+				list($className, $id) = explode("|", $key);
+				if(class_exists($className) && intval($id) == $id) {
+					$buyable = $className::get()->byID($id);
+					if($buyable && $buyable->canPurchase()) {
+						$count++;
+						ShoppingCart::singleton()->addBuyable($buyable);
+					}
+					else {
+						$error++;
+					}
+				}
+				else {
+					$error++;
 				}
 			}
 		}
-		if(Director::is_ajax()) {
-			return $this->controller->renderWith("AjaxCheckoutCart");
+		if($error) {
+			ShoppingCart::singleton()->addMessage(_t("RecommendedProductsModifier_Form.ERROR_UPDATING", "There was an error updating the cart", "bad"));
+		}
+		elseif($count) {
+			ShoppingCart::singleton()->addMessage(_t("RecommendedProductsModifier_Form.CART_UPDATED", "Cart updated (".$count.")", "good"));
 		}
 		else {
-			$this->redirect(CheckoutPage::find_link());
+			ShoppingCart::singleton()->addMessage(_t("RecommendedProductsModifier_Form.NOTHING_TO_ADD", "Nothing to add", "warning"));
 		}
-		return;
+		Controller::curr()->redirectBack();
+
 	}
 
 

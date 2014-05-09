@@ -10,10 +10,12 @@ class EcommerceAlsoRecommendedDOD extends DataExtension {
 
 	function updateCMSFields(FieldList $fields) {
 		if($this->owner instanceOf Product) {
-			$field = new TreeMultiselectField ("EcommerceRecommendedProducts", "Recommended Products", $sourceObject = "SiteTree", $keyField = "ID", $labelField = "Title");
-			$filter = create_function('$obj', 'return ( ( $obj InstanceOf Product || $obj InstanceOf ProductGroup) && ($obj->ID != '.$this->owner->ID.'));');
-			$field->setFilterFunction($filter);
-			$fields->addFieldToTab('Root.RecommendedProducts', $field);
+			if(!$this->owner->EcommerceRecommendedProducts()->count()) {
+				$fields->addFieldToTab('Root.Links', $recProGrid = new GridField('RecommendedProducts', 'Recommended Products', $this->owner->RecommendedFor(), GridFieldConfig_RelationEditor::create()));
+			}
+			if(!$this->owner->RecommendedFor()->count()) {
+				$fields->addFieldToTab('Root.Links', $recProGrid = new GridField('RecommendedProducts', 'Recommended Products', $this->owner->EcommerceRecommendedProducts(), GridFieldConfig_RelationEditor::create()));
+			}
 		}
 	}
 
@@ -23,9 +25,23 @@ class EcommerceAlsoRecommendedDOD extends DataExtension {
 	 */
 	function onAfterWrite(){
 		$products = $this->owner->EcommerceRecommendedProducts();
-		if($products && $products->count()) {
+		if($products->count()) {
 			foreach($products as $product) {
 				if(!$product instanceOf Product) {
+					$products->remove($product);
+				}
+				elseif(!$product->AllowPurchase) {
+					$products->remove($product);
+				}
+			}
+		}
+		$products = $this->owner->RecommendedFor();
+		if($products->count()) {
+			foreach($products as $product) {
+				if(!$product instanceOf Product) {
+					$products->remove($product);
+				}
+				elseif(!$product->AllowPurchase) {
 					$products->remove($product);
 				}
 			}

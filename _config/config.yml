@@ -1,6 +1,32 @@
+---
+Name: ecommerce_also_recommended
+Before: 'mysite/*'
+After: 'framework/*','cms/*','ecommerce/*'
+---
+StoreAdmin:
+  managed_models:
+    - PickUpOrDeliveryModifierOptions
+
+OrderModifierForm_Controller:
+  allowed_actions:
+    - PickUpOrDeliveryModifier
+
+
+PickUpOrDeliveryModifierOptions:
+  extensions:
+    - DataObjectSorterDOD
+
+
 Product:
   extensions:
     - EcommerceAlsoRecommendedDOD
+
+OrderModifierForm_Controller:
+  allowed_actions:
+    - RecommendedProducts
+
+
+
 
 # do not forget to add the RecommendedProductsModifier to the array of modifers, in case you want to use it.
 
