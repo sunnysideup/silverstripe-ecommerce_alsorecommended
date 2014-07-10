@@ -127,27 +127,35 @@ class RecommendedProductsModifier_Form extends OrderModifierForm {
 
 	private static $order_item_classname = "Product_OrderItem";
 
+	private static $product_template = "";
+
 	function __construct($optionalController = null, $name, FieldList $fields, FieldList $actions, $optionalValidator = null, $recommendedBuyables) {
 		$fieldsArray = new FieldList(array(new HeaderField($this->config()->get("something_recommended_text"))));
 		foreach($recommendedBuyables as $buyable) {
-			//foreach product in cart get recommended products
-			$imageID = $buyable->ImageID;
-			$imagePart = '';
-			if($buyable && $buyable->ImageID > 0) {
-				$resizedImage = $buyable->Image()->SetWidth($this->Config()->get("image_width"));
-				if(is_object($resizedImage) && $resizedImage) {
-					$imageLink = $resizedImage->Filename;
-					$imagePart = '<span class="secondPart"><img src="'.$imageLink.'" alt="'.Convert::raw2att($buyable->Title).'" /></span>';
+			$template = Config::inst()->get("RecommendedProductsModifier_Form", "product_template");
+			if($template) {
+				$fieldsArray->push(new LiteralField("Buyable_".$buyable->ID, $buyable->renderWith($template)));
+			}
+			else {
+				//foreach product in cart get recommended products
+				$imageID = $buyable->ImageID;
+				$imagePart = '';
+				if($buyable && $buyable->ImageID > 0) {
+					$resizedImage = $buyable->Image()->SetWidth($this->Config()->get("image_width"));
+					if(is_object($resizedImage) && $resizedImage) {
+						$imageLink = $resizedImage->Filename;
+						$imagePart = '<span class="secondPart"><img src="'.$imageLink.'" alt="'.Convert::raw2att($buyable->Title).'" /></span>';
+					}
 				}
+				if(!$imagePart) {
+					$imagePart = '<span class="secondPart noImage">[no image available for '.$buyable->Title.']</span>';
+				}
+				$priceAsMoney = EcommerceCurrency::get_money_object_from_order_currency($buyable->calculatedPrice());
+				$pricePart = '<span class="firstPart">'.$priceAsMoney->Nice().'</span>';
+				$title = '<a href="'.$buyable->Link().'">'.$buyable->Title.'</a>'.$pricePart.$imagePart.'';
+				$newField = new CheckboxField($buyable->ClassName."|".$buyable->ID, $title);
+				$fieldsArray->push($newField);
 			}
-			if(!$imagePart) {
-				$imagePart = '<span class="secondPart noImage">[no image available for '.$buyable->Title.']</span>';
-			}
-			$priceAsMoney = EcommerceCurrency::get_money_object_from_order_currency($buyable->calculatedPrice());
-			$pricePart = '<span class="firstPart">'.$priceAsMoney->Nice().'</span>';
-			$title = '<a href="'.$buyable->Link().'">'.$buyable->Title.'</a>'.$pricePart.$imagePart.'';
-			$newField = new CheckboxField($buyable->ClassName."|".$buyable->ID, $title);
-			$fieldsArray->push($newField);
 		}
 		$actions = new FieldList(new FormAction('processOrderModifier', $this->config()->get("add_button_text")));
 		// 6) Form construction
