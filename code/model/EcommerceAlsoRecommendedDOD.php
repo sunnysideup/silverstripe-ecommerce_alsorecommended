@@ -14,12 +14,16 @@ class EcommerceAlsoRecommendedDOD extends DataExtension {
 
 	function updateCMSFields(FieldList $fields) {
 		if($this->owner instanceOf Product) {
-			if(!$this->owner->EcommerceRecommendedProducts()->count()) {
-				$fields->addFieldToTab('Root.Links', $recProGrid = new GridField('RecommendedProducts', 'Recommended Products', $this->owner->RecommendedFor(), GridFieldConfig_RelationEditor::create()));
-			}
-			if(!$this->owner->RecommendedFor()->count()) {
-				$fields->addFieldToTab('Root.Links', $recProGrid = new GridField('RecommendedProducts', 'Recommended Products', $this->owner->EcommerceRecommendedProducts(), GridFieldConfig_RelationEditor::create()));
-			}
+			$fields->addFieldToTab('Root.Links', $recProGrid1 = new GridField('EcommerceRecommendedProducts', 'Also Recommended Products', $this->owner->EcommerceRecommendedProducts(), GridFieldConfig_RelationEditor::create()));
+			$fields->addFieldToTab('Root.Links', $recProGrid2 = new GridField('RecommendedFor', 'Recommended For', $this->owner->RecommendedFor(), GridFieldConfig_RelationEditor::create()));
+			$recProGrid1->getConfig()
+				->removeComponentsByType("GridFieldEditButton")
+				->removeComponentsByType("GridFieldAddNewButton")
+				->addComponent(new GridFieldEditButtonOriginalPage());
+			$recProGrid2->getConfig()
+				->removeComponentsByType("GridFieldEditButton")
+				->removeComponentsByType("GridFieldAddNewButton")
+				->addComponent(new GridFieldEditButtonOriginalPage());
 		}
 	}
 
