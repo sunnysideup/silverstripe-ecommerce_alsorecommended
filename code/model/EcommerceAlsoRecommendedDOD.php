@@ -14,16 +14,13 @@ class EcommerceAlsoRecommendedDOD extends DataExtension {
 
 	function updateCMSFields(FieldList $fields) {
 		if($this->owner instanceOf Product) {
-			$fields->addFieldToTab('Root.Links', $recProGrid1 = new GridField('EcommerceRecommendedProducts', 'Also Recommended Products', $this->owner->EcommerceRecommendedProducts(), GridFieldConfig_RelationEditor::create()));
-			$fields->addFieldToTab('Root.Links', $recProGrid2 = new GridField('RecommendedFor', 'Recommended For', $this->owner->RecommendedFor(), GridFieldConfig_RelationEditor::create()));
-			$recProGrid1->getConfig()
+			$config = GridFieldConfig_RelationEditor::create();
+			$config
 				->removeComponentsByType("GridFieldEditButton")
 				->removeComponentsByType("GridFieldAddNewButton")
 				->addComponent(new GridFieldEditButtonOriginalPage());
-			$recProGrid2->getConfig()
-				->removeComponentsByType("GridFieldEditButton")
-				->removeComponentsByType("GridFieldAddNewButton")
-				->addComponent(new GridFieldEditButtonOriginalPage());
+			$fields->addFieldToTab('Root.Links', $recProGrid1 = new GridField('EcommerceRecommendedProducts', 'Also Recommended Products', $this->owner->EcommerceRecommendedProducts(), $config));
+			$fields->addFieldToTab('Root.Links', $recProGrid2 = new GridField('RecommendedFor', 'Recommended For', $this->owner->RecommendedFor(), $config));
 		}
 	}
 
