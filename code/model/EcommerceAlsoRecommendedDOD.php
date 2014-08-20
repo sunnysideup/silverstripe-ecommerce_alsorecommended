@@ -53,4 +53,32 @@ class EcommerceAlsoRecommendedDOD extends DataExtension {
 		}
 	}
 
+	/**
+	 * only returns the products that are for sale
+	 * if only those need to be showing.
+	 * @return DataList
+	 */
+	public function EcommerceRecommendedProductsForSale() {
+		if($this->owner->EcomConfig()->OnlyShowProductsThatCanBePurchased) {
+			return $this->owner->EcommerceRecommendedProducts()->filter(array("AllowPurchase" => 1));
+		}
+		else {
+			return $this->owner->EcommerceRecommendedProducts();
+		}
+	}
+
+	/**
+	 * only returns the products that are for sale
+	 * if only those need to be showing.
+	 * @return DataList
+	 */
+	public function RecommendedForForSale() {
+		if($this->owner->EcomConfig()->OnlyShowProductsThatCanBePurchased) {
+			return $this->owner->RecommendedFor()->filter(array("AllowPurchase" => 1));
+		}
+		else {
+			return $this->owner->RecommendedFor();
+		}
+	}
+
 }
