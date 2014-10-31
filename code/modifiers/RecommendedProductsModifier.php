@@ -151,7 +151,7 @@ class RecommendedProductsModifier_Form extends OrderModifierForm {
 					$imagePart = '<span class="secondPart noImage">[no image available for '.$buyable->Title.']</span>';
 				}
 				$priceAsMoney = EcommerceCurrency::get_money_object_from_order_currency($buyable->calculatedPrice());
-				$pricePart = '<span class="firstPart">'.$priceAsMoney->Nice().'</span>';
+				$pricePart = '<span class="firstPart">'.$priceAsMoney->NiceLongSymbol().'</span>';
 				$title = '<a href="'.$buyable->Link().'">'.$buyable->Title.'</a>'.$pricePart.$imagePart.'';
 				$newField = new CheckboxField($buyable->ClassName."|".$buyable->ID, $title);
 				$fieldsArray->push($newField);
