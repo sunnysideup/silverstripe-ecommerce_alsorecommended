@@ -148,7 +148,7 @@ class RecommendedProductsModifier_Form extends OrderModifierForm {
 				$arrayData = new ArrayData(
 					array(
 						"Buyable" => $buyable,
-						"Checkbox" => new CheckboxField($buyable->ClassName."|".$buyable->ID, $title)
+						"Checkbox" => new CheckboxField($buyable->ClassName."|".$buyable->ID, _t("RecommendedProductsModifier_Form.ADD", "add"))
 					)
 				);
 				$fieldsArray->push(new LiteralField("Buyable_".$buyable->ID, $arrayData->renderWith($template)));
