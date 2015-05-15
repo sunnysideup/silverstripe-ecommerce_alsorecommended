@@ -146,8 +146,10 @@ class RecommendedProductsModifier_Form extends OrderModifierForm {
 			$template = Config::inst()->get("RecommendedProductsModifier_Form", "product_template");
 			if($template) {
 				$arrayData = new ArrayData(
-					"Buyable" => $buyable,
-					"Checkbox" => new CheckboxField($buyable->ClassName."|".$buyable->ID, $title)
+					array(
+						"Buyable" => $buyable,
+						"Checkbox" => new CheckboxField($buyable->ClassName."|".$buyable->ID, $title)
+					)
 				);
 				$fieldsArray->push(new LiteralField("Buyable_".$buyable->ID, $arrayData->renderWith($template)));
 			}
