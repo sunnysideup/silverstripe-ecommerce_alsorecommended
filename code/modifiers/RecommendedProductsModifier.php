@@ -144,6 +144,8 @@ class RecommendedProductsModifier_Form extends OrderModifierForm {
 		$fieldsArray = new FieldList(array(new HeaderField($this->config()->get("something_recommended_text"))));
 		foreach($recommendedBuyables as $buyable) {
 			$template = Config::inst()->get("RecommendedProductsModifier_Form", "product_template");
+			$html = "<div id='RecommendProductsHolder'>";
+			$productFieldList = new FieldList();
 			if($template) {
 				$checkboxID = $buyable->ClassName."|".$buyable->ID;
 				$arrayData = new ArrayData(
@@ -153,7 +155,7 @@ class RecommendedProductsModifier_Form extends OrderModifierForm {
 						"Checkbox" => new CheckboxField($checkboxID, _t("RecommendedProductsModifier_Form.ADD", "add"))
 					)
 				);
-				$fieldsArray->push(new LiteralField("Buyable_".$buyable->ID, $arrayData->renderWith($template)));
+				$productFieldList->push(new LiteralField("Buyable_".$buyable->ID, $arrayData->renderWith($template)));
 			}
 			else {
 				//foreach product in cart get recommended products
@@ -176,6 +178,8 @@ class RecommendedProductsModifier_Form extends OrderModifierForm {
 				$fieldsArray->push($newField);
 			}
 		}
+		$html .= "</div>";
+		$fieldsArray->push(new CompositeField($productFieldList));
 		$actions = new FieldList(new FormAction('processOrderModifier', $this->config()->get("add_button_text")));
 		// 6) Form construction
 		parent::__construct($optionalController, $name, $fieldsArray, $actions, $optionalValidator);
