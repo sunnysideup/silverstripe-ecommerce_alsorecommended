@@ -117,6 +117,17 @@ class RecommendedProductsModifier extends OrderModifier {
 
 }
 
+
+/**
+ * 
+ * you can set
+ * RecommendedProductsModifier_Form:
+ *   product_template: "bla"
+ * 
+ * in your configs to have a customised product display.
+ * 
+ * 
+ */ 
 class RecommendedProductsModifier_Form extends OrderModifierForm {
 
 	private static $image_width = 100;
@@ -134,7 +145,11 @@ class RecommendedProductsModifier_Form extends OrderModifierForm {
 		foreach($recommendedBuyables as $buyable) {
 			$template = Config::inst()->get("RecommendedProductsModifier_Form", "product_template");
 			if($template) {
-				$fieldsArray->push(new LiteralField("Buyable_".$buyable->ID, $buyable->renderWith($template)));
+				$arrayData = new ArrayData(
+					"Buyable" => $buyable,
+					"Checkbox" => new CheckboxField($buyable->ClassName."|".$buyable->ID, $title)
+				);
+				$fieldsArray->push(new LiteralField("Buyable_".$buyable->ID, $arrayData->renderWith($template)));
 			}
 			else {
 				//foreach product in cart get recommended products
