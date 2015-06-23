@@ -21,9 +21,28 @@ var RecommendedProductsModifier = {
 
 	willNotBeAddedToCartClass: "willNotBeAddedToCart",
 
+	reloadCheckoutPage: true,
+
+
 	init: function() {
-		jQuery("#" + RecommendedProductsModifier.formID + " .checkbox input").addClass(RecommendedProductsModifier.willNotBeAddedToCartClass);
-		RecommendedProductsModifier.changeOnTick();
+		if(RecommendedProductsModifier.reloadCheckoutPage) {
+			jQuery("body").on(
+				"click",
+				"#" + RecommendedProductsModifier.formID + " .productActions a",
+				function() {
+					window.setTimeout(
+						function() {
+							location.reload();
+						},
+						500
+					);
+				}
+			);
+		}
+		else {
+			jQuery("#" + RecommendedProductsModifier.formID + " .checkbox input").addClass(RecommendedProductsModifier.willNotBeAddedToCartClass);
+			RecommendedProductsModifier.changeOnTick();
+		}
 	},
 
 	changeOnTick: function() {
