@@ -10,8 +10,8 @@
  *
  *
  */
-class RecommendedProductsModifier_Form extends OrderModifierForm {
-
+class RecommendedProductsModifier_Form extends OrderModifierForm
+{
     private static $image_width = 100;
 
     private static $something_recommended_text = "Recommended Additions";
@@ -22,15 +22,16 @@ class RecommendedProductsModifier_Form extends OrderModifierForm {
 
     private static $product_template = "";
 
-    function __construct($optionalController = null, $name, FieldList $fields, FieldList $actions, $optionalValidator = null, $recommendedBuyables) {
-        if(! ($fields instanceof FieldList)) {
+    public function __construct($optionalController = null, $name, FieldList $fields, FieldList $actions, $optionalValidator = null, $recommendedBuyables)
+    {
+        if (! ($fields instanceof FieldList)) {
             $fields = FieldList::create();
         }
         $fields->push(HeaderField::create($this->config()->get("something_recommended_text")));
         $productFieldList = new FieldList();
-        foreach($recommendedBuyables as $buyable) {
+        foreach ($recommendedBuyables as $buyable) {
             $template = Config::inst()->get("RecommendedProductsModifier_Form", "product_template");
-            if($template) {
+            if ($template) {
                 $checkboxID = $buyable->ClassName."|".$buyable->ID;
                 $arrayData = new ArrayData(
                     array(
@@ -40,19 +41,18 @@ class RecommendedProductsModifier_Form extends OrderModifierForm {
                     )
                 );
                 $productFieldList->push(new LiteralField("Buyable_".$buyable->ID, $arrayData->renderWith($template)));
-            }
-            else {
+            } else {
                 //foreach product in cart get recommended products
                 $imageID = $buyable->ImageID;
                 $imagePart = '';
-                if($buyable && $buyable->ImageID > 0) {
+                if ($buyable && $buyable->ImageID > 0) {
                     $resizedImage = $buyable->Image()->SetWidth($this->Config()->get("image_width"));
-                    if(is_object($resizedImage) && $resizedImage) {
+                    if (is_object($resizedImage) && $resizedImage) {
                         $imageLink = $resizedImage->Filename;
                         $imagePart = '<span class="secondPart"><img src="'.$imageLink.'" alt="'.Convert::raw2att($buyable->Title).'" /></span>';
                     }
                 }
-                if(!$imagePart) {
+                if (!$imagePart) {
                     $imagePart = '<span class="secondPart noImage">[no image available for '.$buyable->Title.']</span>';
                 }
                 $priceAsMoney = EcommerceCurrency::get_money_object_from_order_currency($buyable->calculatedPrice());
@@ -63,7 +63,7 @@ class RecommendedProductsModifier_Form extends OrderModifierForm {
             }
         }
         $fields->push(new CompositeField($productFieldList));
-        if( ! $actions instanceof FieldList) {
+        if (! $actions instanceof FieldList) {
             $actions = FieldList::create();
         }
         $actions->push(FormAction::create('processOrderModifier', $this->config()->get("add_button_text")));
@@ -76,38 +76,34 @@ class RecommendedProductsModifier_Form extends OrderModifierForm {
         Requirements::themedCSS("RecommendedProductsModifier", "ecommerce_alsrecommended");
     }
 
-    public function processOrderModifier($data, $form) {
+    public function processOrderModifier($data, $form)
+    {
         $count = 0;
         $error = 0;
-        foreach($data as $key => $value) {
-            if($value == 1) {
+        foreach ($data as $key => $value) {
+            if ($value == 1) {
                 list($className, $id) = explode("|", $key);
-                if(class_exists($className) && intval($id) == $id) {
+                if (class_exists($className) && intval($id) == $id) {
                     $buyable = $className::get()->byID($id);
-                    if($buyable && $buyable->canPurchase()) {
+                    if ($buyable && $buyable->canPurchase()) {
                         $count++;
                         ShoppingCart::singleton()->addBuyable($buyable);
-                    }
-                    else {
+                    } else {
                         $error++;
                     }
-                }
-                else {
+                } else {
                     $error++;
                 }
             }
         }
-        if($error) {
+        if ($error) {
             ShoppingCart::singleton()->addMessage(_t("RecommendedProductsModifier_Form.ERROR_UPDATING", "There was an error updating the cart", "bad"));
-        }
-        elseif($count) {
+        } elseif ($count) {
             ShoppingCart::singleton()->addMessage(_t("RecommendedProductsModifier_Form.CART_UPDATED", "Cart updated (".$count.")", "good"));
-        }
-        else {
+        } else {
             ShoppingCart::singleton()->addMessage(_t("RecommendedProductsModifier_Form.NOTHING_TO_ADD", "Nothing to add", "warning"));
         }
         Controller::curr()->redirectBack();
-
     }
 
 

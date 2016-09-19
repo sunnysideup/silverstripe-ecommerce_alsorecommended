@@ -8,15 +8,22 @@
  * the product page / dataobject need to have a function RecommendedProductsForCart
  * which returns an array of IDs
  */
-class RecommendedProductsModifier extends OrderModifier {
+class RecommendedProductsModifier extends OrderModifier
+{
 
 //--------------------------------------------------------------------  *** static variables
 
     private static $singular_name = "Recommended Product";
-        function i18n_singular_name() { return _t("RecommendedProductsModifier.SINGULAR_NAME", "Recommended Product");}
+    public function i18n_singular_name()
+    {
+        return _t("RecommendedProductsModifier.SINGULAR_NAME", "Recommended Product");
+    }
 
     private static $plural_name = "Recommended Products";
-        function i18n_plural_name() { return _t("RecommendedProductsModifier.PLURAL_NAME", "Recommended Products");}
+    public function i18n_plural_name()
+    {
+        return _t("RecommendedProductsModifier.PLURAL_NAME", "Recommended Products");
+    }
 
 //--------------------------------------------------------------------  *** static functions
 // ######################################## *** form functions (e. g. Showform and getform)
@@ -28,28 +35,29 @@ class RecommendedProductsModifier extends OrderModifier {
      * standard Modifier Method
      * @return Boolean
      */
-    public function ShowForm() {
-        if(!$this->recommendedBuyables) {
+    public function ShowForm()
+    {
+        if (!$this->recommendedBuyables) {
             $this->recommendedBuyables = new ArrayList();
             $inCartIDArray = array();
-            if($items = $this->Order()->Items()) {
-                foreach($items as $item) {
+            if ($items = $this->Order()->Items()) {
+                foreach ($items as $item) {
                     $buyable = $item->Buyable();
-                    if($buyable instanceof Product) {
+                    if ($buyable instanceof Product) {
                         $codeOfBuyable = $buyable->ClassName.".".$buyable->ID;
                         $inCartIDArray[$codeOfBuyable] = $codeOfBuyable;
                     }
                 }
-                foreach($items as $item) {
+                foreach ($items as $item) {
                     //get recommended products
-                    if($item) {
+                    if ($item) {
                         $buyable = $item->Buyable();
-                        if($buyable instanceof Product) {
+                        if ($buyable instanceof Product) {
                             unset($recommendedProducts);
                             $recommendedProducts = $buyable->EcommerceRecommendedProducts();
-                            foreach($recommendedProducts as $recommendedProduct) {
+                            foreach ($recommendedProducts as $recommendedProduct) {
                                 $codeOfRecommendedProduct = $recommendedProduct->ClassName.".".$recommendedProduct->ID;
-                                if(!in_array($codeOfRecommendedProduct, $inCartIDArray)) {
+                                if (!in_array($codeOfRecommendedProduct, $inCartIDArray)) {
                                     $this->recommendedBuyables->push($recommendedProduct);
                                 }
                             }
@@ -66,7 +74,8 @@ class RecommendedProductsModifier extends OrderModifier {
      * on the checkout page?
      * @return Boolean
      */
-    public function ShowFormInEditableOrderTable() {
+    public function ShowFormInEditableOrderTable()
+    {
         return false;
     }
 
@@ -74,8 +83,9 @@ class RecommendedProductsModifier extends OrderModifier {
      *
      * @return Form
      */
-    function getModifierForm(Controller $optionalController = null, Validator $optionalValidator = null) {
-        if($this->ShowForm()) {
+    public function getModifierForm(Controller $optionalController = null, Validator $optionalValidator = null)
+    {
+        if ($this->ShowForm()) {
             return new RecommendedProductsModifier_Form(
                 $optionalController,
                 'RecommendedProducts',
@@ -88,38 +98,41 @@ class RecommendedProductsModifier extends OrderModifier {
     }
 
 //-------------------------------------------------------------------- *** display functions
-    function ShowInTable() {
+    public function ShowInTable()
+    {
         return false;
     }
 
-    function CanRemove() {
+    public function CanRemove()
+    {
         return false;
     }
 
 
 // -------------------------------------------------------------------- *** table values
-    function LiveCalculatedTotal() {
+    public function LiveCalculatedTotal()
+    {
         return 0;
     }
-    function LiveTableValue() {
+    public function LiveTableValue()
+    {
         return 0;
     }
 
 //-------------------------------------------------------------------- *** table titles
-    function LiveName() {
+    public function LiveName()
+    {
         return $this->i18n_singular_name();
     }
 
-    function Name() {
-        if(!$this->canEdit()) {
+    public function Name()
+    {
+        if (!$this->canEdit()) {
             return $this->Name;
-        }
-        else {
+        } else {
             return $this->LiveName();
         }
     }
 
 //-------------------------------------------------------------------- ***  database functions
-
-
 }

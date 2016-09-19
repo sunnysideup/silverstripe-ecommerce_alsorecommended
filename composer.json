@@ -3,11 +3,13 @@
     "type": "silverstripe-module",
     "description": "adds 'also recommended is ...' to e-commerce ",
     "keywords": [
+        "Silverstripe-CMS",
+        "CMS",
+        "Silverstripe",
         "ecommerce",
         "e-commerce",
         "shop",
         "also recommended",
-        "silverstripe",
         "recommendations",
         "accessoires"
     ],
@@ -20,7 +22,9 @@
         }
     ],
     "require": {
-        "sunnysideup/ecommerce": "dev-master"
+        "sunnysideup/ecommerce": "*",
+        "silverstripe/framework": "~3.1",
+        "silverstripe/cms": "~3.1"
     },
     "extra": {
         "installer-name": "ecommerce_alsorecommended"
