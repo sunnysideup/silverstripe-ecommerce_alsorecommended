@@ -15,13 +15,31 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
     public function updateCMSFields(FieldList $fields)
     {
         if ($this->owner instanceof Product) {
-            $config = GridFieldConfig_RelationEditor::create();
-            $config
-                ->removeComponentsByType("GridFieldEditButton")
-                ->removeComponentsByType("GridFieldAddNewButton")
-                ->addComponent(new GridFieldEditButtonOriginalPage());
-            $fields->addFieldToTab('Root.Links', $recProGrid1 = new GridField('EcommerceRecommendedProducts', 'Also Recommended Products', $this->owner->EcommerceRecommendedProducts(), $config));
-            $fields->addFieldToTab('Root.Links', $recProGrid2 = new GridField('RecommendedFor', 'Recommended For', $this->owner->RecommendedFor(), $config));
+
+            $fields->addFieldToTab(
+                'Root.Links',
+                GridField::create(
+                    'EcommerceRecommendedProducts',
+                    'Also Recommended Products',
+                    $this->owner->EcommerceRecommendedProducts(),
+                    $config = GridFieldBasicPageRelationConfig::create()
+                )
+            );
+            $component = $config->getComponentByType('GridFieldAddExistingAutocompleter');
+            $component->setSearchFields(array("InternalItemID", "Title"));
+
+            $fields->addFieldToTab(
+                'Root.Links',
+                GridField::create(
+                    'RecommendedFor',
+                    'Recommended For',
+                    $this->owner->RecommendedFor(),
+                    $config = GridFieldBasicPageRelationConfig::create()
+                )
+            );
+            $component = $config->getComponentByType('GridFieldAddExistingAutocompleter');
+            $component->setSearchFields(array("InternalItemID", "Title"));
+
         }
     }
 
