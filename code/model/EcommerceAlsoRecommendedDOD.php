@@ -15,7 +15,6 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
     public function updateCMSFields(FieldList $fields)
     {
         if ($this->owner instanceof Product) {
-
             $fields->addFieldToTab(
                 'Root.Links',
                 GridField::create(
@@ -39,7 +38,6 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
             );
             $component = $config->getComponentByType('GridFieldAddExistingAutocompleter');
             $component->setSearchFields(array("InternalItemID", "Title"));
-
         }
     }
 

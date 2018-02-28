@@ -25,8 +25,8 @@ class RecommendedProductsModifier extends OrderModifier
         return _t("RecommendedProductsModifier.PLURAL_NAME", "Recommended Products");
     }
 
-//--------------------------------------------------------------------  *** static functions
-// ######################################## *** form functions (e. g. Showform and getform)
+    //--------------------------------------------------------------------  *** static functions
+    // ######################################## *** form functions (e. g. Showform and getform)
 
 
     protected $recommendedBuyables = null;
@@ -97,7 +97,7 @@ class RecommendedProductsModifier extends OrderModifier
         }
     }
 
-//-------------------------------------------------------------------- *** display functions
+    //-------------------------------------------------------------------- *** display functions
     public function ShowInTable()
     {
         return false;
@@ -109,7 +109,7 @@ class RecommendedProductsModifier extends OrderModifier
     }
 
 
-// -------------------------------------------------------------------- *** table values
+    // -------------------------------------------------------------------- *** table values
     public function LiveCalculatedTotal()
     {
         return 0;
@@ -119,7 +119,7 @@ class RecommendedProductsModifier extends OrderModifier
         return 0;
     }
 
-//-------------------------------------------------------------------- *** table titles
+    //-------------------------------------------------------------------- *** table titles
     public function LiveName()
     {
         return $this->i18n_singular_name();
@@ -134,5 +134,5 @@ class RecommendedProductsModifier extends OrderModifier
         }
     }
 
-//-------------------------------------------------------------------- ***  database functions
+    //-------------------------------------------------------------------- ***  database functions
 }

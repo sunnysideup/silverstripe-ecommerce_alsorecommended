@@ -107,5 +107,5 @@ class RecommendedProductsModifier_Form extends OrderModifierForm
     }
 
 
-//-------------------------------------------------------------------- *** debug
+
 }
