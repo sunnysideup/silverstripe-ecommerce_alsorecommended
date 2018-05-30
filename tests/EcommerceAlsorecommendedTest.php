@@ -1,13 +1,12 @@
 <?php
-class EcommerceAlsorecommendedTest extends SapphireTest {
+class EcommerceAlsorecommendedTest extends SapphireTest
+{
+    protected $usesDatabase = false;
 
-	protected $usesDatabase = false;
+    protected $requiredExtensions = array();
 
-	protected $requiredExtensions = array();
-
-	public function testMyMethod() {
-		$this->assertEquals(1, 1);
-	}
-
+    public function testMyMethod()
+    {
+        $this->assertEquals(1, 1);
+    }
 }
-

@@ -105,7 +105,4 @@ class RecommendedProductsModifier_Form extends OrderModifierForm
         }
         Controller::curr()->redirectBack();
     }
-
-
-
 }
