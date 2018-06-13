@@ -7,6 +7,8 @@ class EcommerceAlsorecommendedTest extends SapphireTest
 
     public function testMyMethod()
     {
-        $this->assertEquals(1, 1);
+        $exitStatus = shell_exec('php framework/cli-script.php dev/build flush=all  > dev/null; echo $?');
+        $exitStatus = intval(trim($exitStatus));
+        $this->assertEquals(0, $exitStatus);
     }
 }
