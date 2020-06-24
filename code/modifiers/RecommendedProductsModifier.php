@@ -136,3 +136,4 @@ class RecommendedProductsModifier extends OrderModifier
 
     //-------------------------------------------------------------------- ***  database functions
 }
+
