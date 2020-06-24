@@ -1,6 +1,6 @@
 {
     "name": "sunnysideup/ecommerce_alsorecommended",
-    "type": "silverstripe-module",
+    "type": "silverstripe-vendormodule",
     "description": "adds 'also recommended is ...' to e-commerce ",
     "keywords": [
         "Silverstripe-CMS",
