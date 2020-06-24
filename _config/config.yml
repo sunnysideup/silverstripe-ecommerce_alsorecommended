@@ -3,30 +3,15 @@ Name: ecommerce_also_recommended
 Before: 'app/*'
 After: 'framework/*','cms/*','ecommerce/*'
 ---
-StoreAdmin:
+Sunnysideup\Ecommerce\Cms\StoreAdmin:
   managed_models:
     - PickUpOrDeliveryModifierOptions
-
-OrderModifierFormController:
+Sunnysideup\Ecommerce\Control\OrderModifierFormController:
   allowed_actions:
     - PickUpOrDeliveryModifier
-
-
 PickUpOrDeliveryModifierOptions:
   extensions:
     - DataObjectSorterDOD
-
-
-Product:
+Sunnysideup\Ecommerce\Pages\Product:
   extensions:
-    - EcommerceAlsoRecommendedDOD
-
-OrderModifierFormController:
-  allowed_actions:
-    - RecommendedProducts
-
-
-
-
-# do not forget to add the RecommendedProductsModifier to the array of modifers, in case you want to use it.
-
+    - Sunnysideup\EcommerceAlsoRecommended\Model\EcommerceAlsoRecommendedDOD

@@ -2,20 +2,37 @@
 
 namespace Sunnysideup\EcommerceAlsoRecommended\Forms;
 
-use OrderModifierForm;
-use FieldList;
-use HeaderField;
-use Config;
-use ArrayData;
-use CheckboxField;
-use LiteralField;
-use Convert;
-use EcommerceCurrency;
-use CompositeField;
-use FormAction;
-use Requirements;
-use ShoppingCart;
-use Controller;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+use Sunnysideup\Ecommerce\Model\ProductOrderItem;
+use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\HeaderField;
+use SilverStripe\Core\Config\Config;
+use Sunnysideup\EcommerceAlsoRecommended\Forms\RecommendedProductsModifier_Form;
+use SilverStripe\Forms\CheckboxField;
+use SilverStripe\View\ArrayData;
+use SilverStripe\Forms\LiteralField;
+use SilverStripe\Core\Convert;
+use Sunnysideup\Ecommerce\Model\Money\EcommerceCurrency;
+use SilverStripe\Forms\CompositeField;
+use SilverStripe\Forms\FormAction;
+use SilverStripe\View\Requirements;
+use Sunnysideup\Ecommerce\Api\ShoppingCart;
+use SilverStripe\Control\Controller;
+use Sunnysideup\Ecommerce\Forms\OrderModifierForm;
+
 
 
 /**
@@ -36,7 +53,7 @@ class RecommendedProductsModifier_Form extends OrderModifierForm
 
     private static $add_button_text = "Add Selected Items";
 
-    private static $order_item_classname = "ProductOrderItem";
+    private static $order_item_classname = ProductOrderItem::class;
 
     private static $product_template = "";
 
@@ -48,7 +65,7 @@ class RecommendedProductsModifier_Form extends OrderModifierForm
         $fields->push(HeaderField::create($this->config()->get("something_recommended_text")));
         $productFieldList = new FieldList();
         foreach ($recommendedBuyables as $buyable) {
-            $template = Config::inst()->get("RecommendedProductsModifier_Form", "product_template");
+            $template = Config::inst()->get(RecommendedProductsModifier_Form::class, "product_template");
             if ($template) {
                 $checkboxID = $buyable->ClassName."|".$buyable->ID;
                 $arrayData = new ArrayData(

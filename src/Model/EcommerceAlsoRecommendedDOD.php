@@ -2,11 +2,18 @@
 
 namespace Sunnysideup\EcommerceAlsoRecommended\Model;
 
-use DataExtension;
-use FieldList;
-use Product;
-use GridField;
-use GridFieldBasicPageRelationConfig;
+
+
+
+
+
+use Sunnysideup\Ecommerce\Pages\Product;
+use SilverStripe\Forms\FieldList;
+use Sunnysideup\Ecommerce\Forms\Gridfield\Configs\GridFieldBasicPageRelationConfig;
+use SilverStripe\Forms\GridField\GridField;
+use SilverStripe\Forms\GridField\GridFieldAddExistingAutocompleter;
+use SilverStripe\ORM\DataExtension;
+
 
 
 
@@ -37,11 +44,11 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
     private static $table_name = 'EcommerceAlsoRecommendedDOD';
 
     private static $many_many = array(
-        'EcommerceRecommendedProducts' => 'Product'
+        'EcommerceRecommendedProducts' => Product::class
     );
 
     private static $belongs_many_many = array(
-        'RecommendedFor' => 'Product'
+        'RecommendedFor' => Product::class
     );
 
     public function updateCMSFields(FieldList $fields)
@@ -56,7 +63,7 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
                     $config = GridFieldBasicPageRelationConfig::create()
                 )
             );
-            $component = $config->getComponentByType('GridFieldAddExistingAutocompleter');
+            $component = $config->getComponentByType(GridFieldAddExistingAutocompleter::class);
             $component->setSearchFields(array("InternalItemID", "Title"));
 
             $fields->addFieldToTab(
@@ -68,7 +75,7 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
                     $config = GridFieldBasicPageRelationConfig::create()
                 )
             );
-            $component = $config->getComponentByType('GridFieldAddExistingAutocompleter');
+            $component = $config->getComponentByType(GridFieldAddExistingAutocompleter::class);
             $component->setSearchFields(array("InternalItemID", "Title"));
         }
     }
