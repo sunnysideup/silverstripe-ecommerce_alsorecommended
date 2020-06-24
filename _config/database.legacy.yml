@@ -1,0 +1,5 @@
+SilverStripe\ORM\DatabaseAdmin:
+  classname_value_remapping:
+    RecommendedProductsModifier_Form: Sunnysideup\EcommerceAlsoRecommended\Forms\RecommendedProductsModifier_Form
+    RecommendedProductsModifier: Sunnysideup\EcommerceAlsoRecommended\Modifiers\RecommendedProductsModifier
+    EcommerceAlsoRecommendedDOD: Sunnysideup\EcommerceAlsoRecommended\Model\EcommerceAlsoRecommendedDOD
