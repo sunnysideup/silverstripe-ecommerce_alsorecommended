@@ -4,6 +4,20 @@
 
 class EcommerceAlsoRecommendedDOD extends DataExtension
 {
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * OLD: private static $many_many = (case sensitive)
+  * NEW: 
+    private static $table_name = '[SEARCH_REPLACE_CLASS_NAME_GOES_HERE]';
+
+    private static $many_many = (COMPLEX)
+  * EXP: Check that is class indeed extends DataObject and that it is not a data-extension!
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
+    
+    private static $table_name = 'EcommerceAlsoRecommendedDOD';
+
     private static $many_many = array(
         'EcommerceRecommendedProducts' => 'Product'
     );
