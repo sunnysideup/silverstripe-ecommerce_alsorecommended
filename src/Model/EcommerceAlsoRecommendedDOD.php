@@ -1,5 +1,14 @@
 <?php
 
+namespace Sunnysideup\EcommerceAlsoRecommended\Model;
+
+use DataExtension;
+use FieldList;
+use Product;
+use GridField;
+use GridFieldBasicPageRelationConfig;
+
+
 
 
 

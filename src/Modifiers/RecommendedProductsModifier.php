@@ -1,5 +1,16 @@
 <?php
 
+namespace Sunnysideup\EcommerceAlsoRecommended\Modifiers;
+
+use OrderModifier;
+use ArrayList;
+use Product;
+use Controller;
+use Validator;
+use RecommendedProductsModifier_Form;
+use FieldList;
+
+
 /**
  * @author Nicolaas [at] sunnysideup.co.nz
  * @package: ecommerce

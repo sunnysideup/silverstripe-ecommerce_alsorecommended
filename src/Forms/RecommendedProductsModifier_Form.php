@@ -1,5 +1,23 @@
 <?php
 
+namespace Sunnysideup\EcommerceAlsoRecommended\Forms;
+
+use OrderModifierForm;
+use FieldList;
+use HeaderField;
+use Config;
+use ArrayData;
+use CheckboxField;
+use LiteralField;
+use Convert;
+use EcommerceCurrency;
+use CompositeField;
+use FormAction;
+use Requirements;
+use ShoppingCart;
+use Controller;
+
+
 /**
  *
  * you can set
