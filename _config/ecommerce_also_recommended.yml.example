@@ -2,4 +2,4 @@ RecommendedProductsModifier_Form:
   image_width: 100
   something_recommended_text: "RECOMMENDED ARE"
   add_button_text: "RECOMMENDED ARE"
-  order_item_classname: Product_OrderItem
+  order_item_classname: ProductOrderItem

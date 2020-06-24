@@ -1,13 +1,13 @@
 ---
 Name: ecommerce_also_recommended
-Before: 'mysite/*'
+Before: 'app/*'
 After: 'framework/*','cms/*','ecommerce/*'
 ---
 StoreAdmin:
   managed_models:
     - PickUpOrDeliveryModifierOptions
 
-OrderModifierForm_Controller:
+OrderModifierFormController:
   allowed_actions:
     - PickUpOrDeliveryModifier
 
@@ -21,7 +21,7 @@ Product:
   extensions:
     - EcommerceAlsoRecommendedDOD
 
-OrderModifierForm_Controller:
+OrderModifierFormController:
   allowed_actions:
     - RecommendedProducts
 

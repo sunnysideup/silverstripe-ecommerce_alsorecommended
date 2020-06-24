@@ -18,7 +18,7 @@ class RecommendedProductsModifier_Form extends OrderModifierForm
 
     private static $add_button_text = "Add Selected Items";
 
-    private static $order_item_classname = "Product_OrderItem";
+    private static $order_item_classname = "ProductOrderItem";
 
     private static $product_template = "";
 
@@ -40,13 +40,22 @@ class RecommendedProductsModifier_Form extends OrderModifierForm
                         "Checkbox" => new CheckboxField($checkboxID, _t("RecommendedProductsModifier_Form.ADD", "add"))
                     )
                 );
-                $productFieldList->push(new LiteralField("Buyable_".$buyable->ID, $arrayData->renderWith($template)));
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: automated upgrade
+  * OLD: ->RenderWith( (ignore case)
+  * NEW: ->RenderWith( (COMPLEX)
+  * EXP: Check that the template location is still valid!
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
+                $productFieldList->push(new LiteralField("Buyable_".$buyable->ID, $arrayData->RenderWith($template)));
             } else {
                 //foreach product in cart get recommended products
                 $imageID = $buyable->ImageID;
                 $imagePart = '';
                 if ($buyable && $buyable->ImageID > 0) {
-                    $resizedImage = $buyable->Image()->SetWidth($this->Config()->get("image_width"));
+                    $resizedImage = $buyable->Image()->ScaleWidth($this->Config()->get("image_width"));
                     if (is_object($resizedImage) && $resizedImage) {
                         $imageLink = $resizedImage->Filename;
                         $imagePart = '<span class="secondPart"><img src="'.$imageLink.'" alt="'.Convert::raw2att($buyable->Title).'" /></span>';
@@ -69,7 +78,16 @@ class RecommendedProductsModifier_Form extends OrderModifierForm
         $actions->push(FormAction::create('processOrderModifier', $this->config()->get("add_button_text")));
         // 6) Form construction
         parent::__construct($optionalController, $name, $fields, $actions, $optionalValidator);
-        Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: automated upgrade
+  * OLD: THIRDPARTY_DIR."/jquery/jquery.js" (case sensitive)
+  * NEW: 'silverstripe/admin: thirdparty/jquery/jquery.js' (COMPLEX)
+  * EXP: Check for best usage and inclusion of Jquery
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
+        Requirements::javascript('silverstripe/admin: thirdparty/jquery/jquery.js');
         //Requirements::block(THIRDPARTY_DIR."/jquery/jquery.js");
         //Requirements::javascript(Director::protocol()."ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js");
         Requirements::javascript("ecommerce_alsorecommended/javascript/RecommendedProductsModifier.js");
@@ -82,8 +100,35 @@ class RecommendedProductsModifier_Form extends OrderModifierForm
         $error = 0;
         foreach ($data as $key => $value) {
             if ($value == 1) {
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: automated upgrade
+  * OLD: $className (case sensitive)
+  * NEW: $className (COMPLEX)
+  * EXP: Check if the class name can still be used as such
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
                 list($className, $id) = explode("|", $key);
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: automated upgrade
+  * OLD: $className (case sensitive)
+  * NEW: $className (COMPLEX)
+  * EXP: Check if the class name can still be used as such
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
                 if (class_exists($className) && intval($id) == $id) {
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: automated upgrade
+  * OLD: $className (case sensitive)
+  * NEW: $className (COMPLEX)
+  * EXP: Check if the class name can still be used as such
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
                     $buyable = $className::get()->byID($id);
                     if ($buyable && $buyable->canPurchase()) {
                         $count++;

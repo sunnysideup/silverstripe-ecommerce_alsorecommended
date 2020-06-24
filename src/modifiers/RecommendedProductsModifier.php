@@ -39,7 +39,7 @@ class RecommendedProductsModifier extends OrderModifier
     {
         if (!$this->recommendedBuyables) {
             $this->recommendedBuyables = new ArrayList();
-            $inCartIDArray = array();
+            $inCartIDArray = [];
             if ($items = $this->Order()->Items()) {
                 foreach ($items as $item) {
                     $buyable = $item->Buyable();
