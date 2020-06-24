@@ -87,11 +87,11 @@ class RecommendedProductsModifier_Form extends OrderModifierForm
   * EXP: Check for best usage and inclusion of Jquery
   * ### @@@@ STOP REPLACEMENT @@@@ ###
   */
-        Requirements::javascript('silverstripe/admin: thirdparty/jquery/jquery.js');
+        Requirements::javascript('sunnysideup/ecommerce_alsorecommended: silverstripe/admin: thirdparty/jquery/jquery.js');
         //Requirements::block(THIRDPARTY_DIR."/jquery/jquery.js");
         //Requirements::javascript(Director::protocol()."ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js");
-        Requirements::javascript("ecommerce_alsorecommended/javascript/RecommendedProductsModifier.js");
-        Requirements::themedCSS("RecommendedProductsModifier", "ecommerce_alsrecommended");
+        Requirements::javascript("sunnysideup/ecommerce_alsorecommended: ecommerce_alsorecommended/javascript/RecommendedProductsModifier.js");
+        Requirements::themedCSS("sunnysideup/ecommerce_alsorecommended: RecommendedProductsModifier", "ecommerce_alsrecommended");
     }
 
     public function processOrderModifier($data, $form)
