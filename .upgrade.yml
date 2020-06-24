@@ -1,4 +1,4 @@
 mappings:
-  RecommendedProductsModifier_Form: Sunnysideup\EcommerceAlsoRecommended\Forms\RecommendedProductsModifier_Form
+  RecommendedProductsModifier_Form: Sunnysideup\EcommerceAlsoRecommended\Forms\RecommendedProductsModifierForm
   RecommendedProductsModifier: Sunnysideup\EcommerceAlsoRecommended\Modifiers\RecommendedProductsModifier
   EcommerceAlsoRecommendedDOD: Sunnysideup\EcommerceAlsoRecommended\Model\EcommerceAlsoRecommendedDOD

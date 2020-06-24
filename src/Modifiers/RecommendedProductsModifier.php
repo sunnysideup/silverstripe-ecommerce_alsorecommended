@@ -14,10 +14,8 @@ use Sunnysideup\Ecommerce\Pages\Product;
 use SilverStripe\Control\Controller;
 use SilverStripe\Forms\Validator;
 use SilverStripe\Forms\FieldList;
-use Sunnysideup\EcommerceAlsoRecommended\Forms\RecommendedProductsModifier_Form;
 use Sunnysideup\Ecommerce\Model\OrderModifier;
-
-
+use Sunnysideup\EcommerceAlsoRecommended\Forms\RecommendedProductsModifierForm;
 
 /**
  * @author Nicolaas [at] sunnysideup.co.nz
@@ -105,7 +103,7 @@ class RecommendedProductsModifier extends OrderModifier
     public function getModifierForm(Controller $optionalController = null, Validator $optionalValidator = null)
     {
         if ($this->ShowForm()) {
-            return new RecommendedProductsModifier_Form(
+            return new RecommendedProductsModifierForm(
                 $optionalController,
                 'RecommendedProducts',
                 FieldList::create(),

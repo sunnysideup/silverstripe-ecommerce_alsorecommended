@@ -15,7 +15,7 @@
 
 var RecommendedProductsModifier = {
 
-	formID: "RecommendedProductsModifier_Form_RecommendedProducts",
+	formID: "RecommendedProductsModifierForm_RecommendedProducts",
 
 	willBeAddedToCartClass: "willBeAddedToCart",
 

@@ -3,24 +3,10 @@
 namespace Sunnysideup\EcommerceAlsoRecommended\Forms;
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 use Sunnysideup\Ecommerce\Model\ProductOrderItem;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\HeaderField;
 use SilverStripe\Core\Config\Config;
-use Sunnysideup\EcommerceAlsoRecommended\Forms\RecommendedProductsModifier_Form;
 use SilverStripe\Forms\CheckboxField;
 use SilverStripe\View\ArrayData;
 use SilverStripe\Forms\LiteralField;
@@ -31,6 +17,7 @@ use SilverStripe\Forms\FormAction;
 use SilverStripe\View\Requirements;
 use Sunnysideup\Ecommerce\Api\ShoppingCart;
 use SilverStripe\Control\Controller;
+use SilverStripe\ORM\FieldType\DBField;
 use Sunnysideup\Ecommerce\Forms\OrderModifierForm;
 
 
@@ -38,14 +25,14 @@ use Sunnysideup\Ecommerce\Forms\OrderModifierForm;
 /**
  *
  * you can set
- * RecommendedProductsModifier_Form:
+ * RecommendedProductsModifierForm:
  *   product_template: "bla"
  *
  * in your configs to have a customised product display.
  *
  *
  */
-class RecommendedProductsModifier_Form extends OrderModifierForm
+class RecommendedProductsModifierForm extends OrderModifierForm
 {
     private static $image_width = 100;
 
@@ -65,25 +52,16 @@ class RecommendedProductsModifier_Form extends OrderModifierForm
         $fields->push(HeaderField::create($this->config()->get("something_recommended_text")));
         $productFieldList = new FieldList();
         foreach ($recommendedBuyables as $buyable) {
-            $template = Config::inst()->get(RecommendedProductsModifier_Form::class, "product_template");
+            $template = Config::inst()->get(RecommendedProductsModifierForm::class, "product_template");
             if ($template) {
                 $checkboxID = $buyable->ClassName."|".$buyable->ID;
                 $arrayData = new ArrayData(
                     array(
                         "Buyable" => $buyable,
                         "CheckboxID" => $checkboxID,
-                        "Checkbox" => new CheckboxField($checkboxID, _t("RecommendedProductsModifier_Form.ADD", "add"))
+                        "Checkbox" => new CheckboxField($checkboxID, _t("RecommendedProductsModifierForm.ADD", "add"))
                     )
                 );
-
-/**
-  * ### @@@@ START REPLACEMENT @@@@ ###
-  * WHY: automated upgrade
-  * OLD: ->RenderWith( (ignore case)
-  * NEW: ->RenderWith( (COMPLEX)
-  * EXP: Check that the template location is still valid!
-  * ### @@@@ STOP REPLACEMENT @@@@ ###
-  */
                 $productFieldList->push(new LiteralField("Buyable_".$buyable->ID, $arrayData->RenderWith($template)));
             } else {
                 //foreach product in cart get recommended products
@@ -101,8 +79,14 @@ class RecommendedProductsModifier_Form extends OrderModifierForm
                 }
                 $priceAsMoney = EcommerceCurrency::get_money_object_from_order_currency($buyable->calculatedPrice());
                 $pricePart = '<span class="firstPart">'.$priceAsMoney->NiceLongSymbol().'</span>';
-                $title = '<a href="'.$buyable->getRequestHandler()->getRequestHandler()->Link().'">'.$buyable->Title.'</a>'.$pricePart.$imagePart.'';
-                $newField = new CheckboxField($buyable->ClassName."|".$buyable->ID, $title);
+                $title = '<a href="'.$buyable->Link().'">'.$buyable->Title.'</a>'.$pricePart.$imagePart.'';
+                $newField = new CheckboxField(
+                    $buyable->ClassName."|".$buyable->ID,
+                    DBField::create_field(
+                        'HTMLText',
+                        $title
+                    )
+                );
                 $fields->push($newField);
             }
         }
@@ -113,20 +97,11 @@ class RecommendedProductsModifier_Form extends OrderModifierForm
         $actions->push(FormAction::create('processOrderModifier', $this->config()->get("add_button_text")));
         // 6) Form construction
         parent::__construct($optionalController, $name, $fields, $actions, $optionalValidator);
-
-/**
-  * ### @@@@ START REPLACEMENT @@@@ ###
-  * WHY: automated upgrade
-  * OLD: THIRDPARTY_DIR."/jquery/jquery.js" (case sensitive)
-  * NEW: 'silverstripe/admin: thirdparty/jquery/jquery.js' (COMPLEX)
-  * EXP: Check for best usage and inclusion of Jquery
-  * ### @@@@ STOP REPLACEMENT @@@@ ###
-  */
-        Requirements::javascript('sunnysideup/ecommerce_alsorecommended: silverstripe/admin: thirdparty/jquery/jquery.js');
+        Requirements::javascript('silverstripe/admin: thirdparty/jquery/jquery.js');
         //Requirements::block(THIRDPARTY_DIR."/jquery/jquery.js");
         //Requirements::javascript(Director::protocol()."ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js");
-        Requirements::javascript("sunnysideup/ecommerce_alsorecommended: ecommerce_alsorecommended/javascript/RecommendedProductsModifier.js");
-        Requirements::themedCSS("sunnysideup/ecommerce_alsorecommended: RecommendedProductsModifier", "ecommerce_alsrecommended");
+        Requirements::javascript("sunnysideup/ecommerce_alsorecommended: client/javascript/RecommendedProductsModifier.js");
+        Requirements::themedCSS("client/css/RecommendedProductsModifier");
     }
 
     public function processOrderModifier($data, $form)
@@ -177,11 +152,11 @@ class RecommendedProductsModifier_Form extends OrderModifierForm
             }
         }
         if ($error) {
-            ShoppingCart::singleton()->addMessage(_t("RecommendedProductsModifier_Form.ERROR_UPDATING", "There was an error updating the cart", "bad"));
+            ShoppingCart::singleton()->addMessage(_t("RecommendedProductsModifierForm.ERROR_UPDATING", "There was an error updating the cart", "bad"));
         } elseif ($count) {
-            ShoppingCart::singleton()->addMessage(_t("RecommendedProductsModifier_Form.CART_UPDATED", "Cart updated (".$count.")", "good"));
+            ShoppingCart::singleton()->addMessage(_t("RecommendedProductsModifierForm.CART_UPDATED", "Cart updated (".$count.")", "good"));
         } else {
-            ShoppingCart::singleton()->addMessage(_t("RecommendedProductsModifier_Form.NOTHING_TO_ADD", "Nothing to add", "warning"));
+            ShoppingCart::singleton()->addMessage(_t("RecommendedProductsModifierForm.NOTHING_TO_ADD", "Nothing to add", "warning"));
         }
         Controller::curr()->redirectBack();
     }
