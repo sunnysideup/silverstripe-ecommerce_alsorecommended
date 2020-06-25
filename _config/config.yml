@@ -7,15 +7,9 @@ After:
   - '#cmsextensions'
   - '#ecommerce'
 ---
-Sunnysideup\Ecommerce\Cms\StoreAdmin:
-  managed_models:
-    - PickUpOrDeliveryModifierOptions
 Sunnysideup\Ecommerce\Control\OrderModifierFormController:
   allowed_actions:
-    - PickUpOrDeliveryModifier
-PickUpOrDeliveryModifierOptions:
-  extensions:
-    - DataObjectSorterDOD
+    - RecommendedProducts
 Sunnysideup\Ecommerce\Pages\Product:
   extensions:
     - Sunnysideup\EcommerceAlsoRecommended\Model\EcommerceAlsoRecommendedDOD
