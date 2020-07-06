@@ -90,7 +90,7 @@ class RecommendedProductsModifier extends OrderModifier
     }
 
     /**
-     * @return Form
+     * @return \SilverStripe\Forms\Form
      */
     public function getModifierForm(Controller $optionalController = null, Validator $optionalValidator = null)
     {

@@ -78,7 +78,7 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
     /**
      * only returns the products that are for sale
      * if only those need to be showing.
-     * @return DataList
+     * @return \SilverStripe\ORM\DataList
      */
     public function EcommerceRecommendedProductsForSale()
     {
@@ -91,7 +91,7 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
     /**
      * only returns the products that are for sale
      * if only those need to be showing.
-     * @return DataList
+     * @return \SilverStripe\ORM\DataList
      */
     public function RecommendedForForSale()
     {
