@@ -43,7 +43,7 @@ class RecommendedProductsModifier extends OrderModifier
 
     /**
      * standard Modifier Method
-     * @return boolean
+     * @return bool
      */
     public function ShowForm()
     {
@@ -82,7 +82,7 @@ class RecommendedProductsModifier extends OrderModifier
     /**
      * Should the form be included in the editable form
      * on the checkout page?
-     * @return boolean
+     * @return bool
      */
     public function ShowFormInEditableOrderTable()
     {
