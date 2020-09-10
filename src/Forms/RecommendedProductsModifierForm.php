@@ -96,7 +96,7 @@ class RecommendedProductsModifierForm extends OrderModifierForm
         //Requirements::block(THIRDPARTY_DIR."/jquery/jquery.js");
         //Requirements::javascript(Director::protocol()."ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js");
         Requirements::javascript('sunnysideup/ecommerce_alsorecommended: client/javascript/RecommendedProductsModifier.js');
-        Requirements::themedCSS('client/css/RecommendedProductsModifier');
+        Requirements::themedCSS('RecommendedProductsModifier');
     }
 
     public function processOrderModifier($data, $form)
