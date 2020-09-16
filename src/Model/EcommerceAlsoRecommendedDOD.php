@@ -82,7 +82,7 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
      */
     public function EcommerceRecommendedProductsForSale()
     {
-        if ($this->owner->EcomConfig()->OnlyShowProductsThatCanBePurchased) {
+        if (EcommerceConfig::inst()->OnlyShowProductsThatCanBePurchased) {
             return $this->owner->EcommerceRecommendedProducts()->filter(['AllowPurchase' => 1]);
         }
         return $this->owner->EcommerceRecommendedProducts();
@@ -95,7 +95,7 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
      */
     public function RecommendedForForSale()
     {
-        if ($this->owner->EcomConfig()->OnlyShowProductsThatCanBePurchased) {
+        if (EcommerceConfig::inst()->OnlyShowProductsThatCanBePurchased) {
             return $this->owner->RecommendedFor()->filter(['AllowPurchase' => 1]);
         }
         return $this->owner->RecommendedFor();
