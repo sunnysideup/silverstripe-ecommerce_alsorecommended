@@ -6,9 +6,9 @@ use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\GridField\GridField;
 use SilverStripe\Forms\GridField\GridFieldAddExistingAutocompleter;
 use SilverStripe\ORM\DataExtension;
+use Sunnysideup\Ecommerce\Config\EcommerceConfig;
 use Sunnysideup\Ecommerce\Forms\Gridfield\Configs\GridFieldBasicPageRelationConfig;
 use Sunnysideup\Ecommerce\Pages\Product;
-use Sunnysideup\Ecommerce\Config\EcommerceConfig;
 
 class EcommerceAlsoRecommendedDOD extends DataExtension
 {
