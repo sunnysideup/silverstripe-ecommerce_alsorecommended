@@ -23,7 +23,7 @@ class RecommendedProductsModifier extends OrderModifier
     //--------------------------------------------------------------------  *** static functions
     // ######################################## *** form functions (e. g. Showform and getform)
 
-    protected $recommendedBuyables = null;
+    protected $recommendedBuyables;
 
     //--------------------------------------------------------------------  *** static variables
 
@@ -117,29 +117,29 @@ class RecommendedProductsModifier extends OrderModifier
         return false;
     }
 
-    // -------------------------------------------------------------------- *** table values
-    public function LiveCalculatedTotal()
-    {
-        return 0;
-    }
-
-    public function LiveTableValue()
-    {
-        return 0;
-    }
-
-    //-------------------------------------------------------------------- *** table titles
-    public function LiveName()
-    {
-        return $this->i18n_singular_name();
-    }
-
     public function Name()
     {
         if (! $this->canEdit()) {
             return $this->Name;
         }
         return $this->LiveName();
+    }
+
+    // -------------------------------------------------------------------- *** table values
+    protected function LiveCalculatedTotal()
+    {
+        return 0;
+    }
+
+    protected function LiveTableValue()
+    {
+        return 0;
+    }
+
+    //-------------------------------------------------------------------- *** table titles
+    protected function LiveName()
+    {
+        return $this->i18n_singular_name();
     }
 
     //-------------------------------------------------------------------- ***  database functions
