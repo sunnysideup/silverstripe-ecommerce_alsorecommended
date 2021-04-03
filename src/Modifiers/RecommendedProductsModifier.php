@@ -43,7 +43,7 @@ class RecommendedProductsModifier extends OrderModifier
     }
 
     /**
-     * standard Modifier Method
+     * standard Modifier Method.
      */
     public function ShowForm(): bool
     {
@@ -76,6 +76,7 @@ class RecommendedProductsModifier extends OrderModifier
                 }
             }
         }
+
         return $this->recommendedBuyables->count();
     }
 
@@ -120,6 +121,7 @@ class RecommendedProductsModifier extends OrderModifier
         if (! $this->canEdit()) {
             return $this->Name;
         }
+
         return $this->LiveName();
     }
 

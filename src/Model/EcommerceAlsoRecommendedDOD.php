@@ -50,7 +50,7 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
     }
 
     /**
-     * small cleanup
+     * small cleanup.
      */
     public function onAfterWrite()
     {
@@ -79,6 +79,7 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
     /**
      * only returns the products that are for sale
      * if only those need to be showing.
+     *
      * @return \SilverStripe\ORM\DataList
      */
     public function EcommerceRecommendedProductsForSale()
@@ -86,12 +87,14 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
         if (EcommerceConfig::inst()->OnlyShowProductsThatCanBePurchased) {
             return $this->owner->EcommerceRecommendedProducts()->filter(['AllowPurchase' => 1]);
         }
+
         return $this->owner->EcommerceRecommendedProducts();
     }
 
     /**
      * only returns the products that are for sale
      * if only those need to be showing.
+     *
      * @return \SilverStripe\ORM\DataList
      */
     public function RecommendedForForSale()
@@ -99,6 +102,7 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
         if (EcommerceConfig::inst()->OnlyShowProductsThatCanBePurchased) {
             return $this->owner->RecommendedFor()->filter(['AllowPurchase' => 1]);
         }
+
         return $this->owner->RecommendedFor();
     }
 }

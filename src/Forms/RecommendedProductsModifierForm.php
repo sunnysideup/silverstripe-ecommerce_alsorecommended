@@ -22,7 +22,7 @@ use Sunnysideup\Ecommerce\Model\ProductOrderItem;
 /**
  * you can set
  * RecommendedProductsModifierForm:
- *   product_template: "bla"
+ *   product_template: "bla".
  *
  * in your configs to have a customised product display.
  */
@@ -104,7 +104,7 @@ class RecommendedProductsModifierForm extends OrderModifierForm
         $count = 0;
         $error = 0;
         foreach ($data as $key => $value) {
-            if ($value === 1) {
+            if (1 === $value) {
                 list($className, $id) = explode('|', $key);
 
                 if (class_exists($className) && (int) $id === $id) {
