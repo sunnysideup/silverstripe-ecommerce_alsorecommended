@@ -44,9 +44,8 @@ class RecommendedProductsModifier extends OrderModifier
 
     /**
      * standard Modifier Method
-     * @return bool
      */
-    public function ShowForm() : bool
+    public function ShowForm(): bool
     {
         if (! $this->recommendedBuyables) {
             $this->recommendedBuyables = new ArrayList();
@@ -83,17 +82,13 @@ class RecommendedProductsModifier extends OrderModifier
     /**
      * Should the form be included in the editable form
      * on the checkout page?
-     * @return bool
      */
-    public function ShowFormInEditableOrderTable() : bool
+    public function ShowFormInEditableOrderTable(): bool
     {
         return false;
     }
 
-    /**
-     * @return RecommendedProductsModifierForm|null
-     */
-    public function getModifierForm(Controller $optionalController = null, Validator $optionalValidator = null) : ?RecommendedProductsModifierForm
+    public function getModifierForm(Controller $optionalController = null, Validator $optionalValidator = null): ?RecommendedProductsModifierForm
     {
         if ($this->ShowForm()) {
             return new RecommendedProductsModifierForm(
@@ -110,12 +105,12 @@ class RecommendedProductsModifier extends OrderModifier
     }
 
     //-------------------------------------------------------------------- *** display functions
-    public function ShowInTable() : bool
+    public function ShowInTable(): bool
     {
         return false;
     }
 
-    public function CanRemove() : bool
+    public function CanRemove(): bool
     {
         return false;
     }
