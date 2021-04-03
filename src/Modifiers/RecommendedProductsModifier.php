@@ -4,6 +4,7 @@ namespace Sunnysideup\EcommerceAlsoRecommended\Modifiers;
 
 use SilverStripe\Control\Controller;
 use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\Form;
 use SilverStripe\Forms\Validator;
 use SilverStripe\ORM\ArrayList;
 use Sunnysideup\Ecommerce\Model\OrderModifier;
@@ -45,7 +46,7 @@ class RecommendedProductsModifier extends OrderModifier
      * standard Modifier Method
      * @return bool
      */
-    public function ShowForm()
+    public function ShowForm() : bool
     {
         if (! $this->recommendedBuyables) {
             $this->recommendedBuyables = new ArrayList();
@@ -84,15 +85,15 @@ class RecommendedProductsModifier extends OrderModifier
      * on the checkout page?
      * @return bool
      */
-    public function ShowFormInEditableOrderTable()
+    public function ShowFormInEditableOrderTable() : bool
     {
         return false;
     }
 
     /**
-     * @return \SilverStripe\Forms\Form
+     * @return RecommendedProductsModifierForm|null
      */
-    public function getModifierForm(Controller $optionalController = null, Validator $optionalValidator = null)
+    public function getModifierForm(Controller $optionalController = null, Validator $optionalValidator = null) : ?RecommendedProductsModifierForm
     {
         if ($this->ShowForm()) {
             return new RecommendedProductsModifierForm(
@@ -104,15 +105,17 @@ class RecommendedProductsModifier extends OrderModifier
                 $this->recommendedBuyables
             );
         }
+
+        return null;
     }
 
     //-------------------------------------------------------------------- *** display functions
-    public function ShowInTable()
+    public function ShowInTable() : bool
     {
         return false;
     }
 
-    public function CanRemove()
+    public function CanRemove() : bool
     {
         return false;
     }
