@@ -85,7 +85,7 @@ class RecommendedProductsModifierForm extends OrderModifierForm
                 }
             }
         }
-        $fields->push(new CompositeField($productFieldList));
+        $fields->push(CompositeField::create($productFieldList)->setName('Products'));
         if (! $actions instanceof FieldList) {
             $actions = FieldList::create();
         }
