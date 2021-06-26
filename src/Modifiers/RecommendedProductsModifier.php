@@ -68,7 +68,9 @@ class RecommendedProductsModifier extends OrderModifier
                             foreach ($recommendedProducts as $recommendedProduct) {
                                 $codeOfRecommendedProduct = $recommendedProduct->ClassName . '.' . $recommendedProduct->ID;
                                 if (! in_array($codeOfRecommendedProduct, $inCartIDArray, true)) {
-                                    $this->recommendedBuyables->push($recommendedProduct);
+                                    if($recommendedProduct->canPurchase() && $recommendedProduct->AllowPurchase) {
+                                        $this->recommendedBuyables->push($recommendedProduct);
+                                    }
                                 }
                             }
                         }

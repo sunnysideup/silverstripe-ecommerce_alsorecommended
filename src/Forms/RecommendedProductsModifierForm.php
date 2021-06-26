@@ -43,9 +43,10 @@ class RecommendedProductsModifierForm extends OrderModifierForm
         if (! ($fields instanceof FieldList)) {
             $fields = FieldList::create();
         }
-        $fields->push(HeaderField::create($this->config()->get('something_recommended_text')));
         $productFieldList = new FieldList();
-        if ($recommendedBuyables) {
+        $recommendedBuyables = $recommendedBuyables->filter(['AllowPurchase' => 1]);
+        if ($recommendedBuyables && $recommendedBuyables->count()) {
+            $fields->push(HeaderField::create($this->config()->get('something_recommended_text')));
             foreach ($recommendedBuyables as $buyable) {
                 $template = Config::inst()->get(RecommendedProductsModifierForm::class, 'product_template');
                 if ($template) {
