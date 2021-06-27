@@ -55,7 +55,7 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
     public function onAfterWrite()
     {
         $products = $this->owner->EcommerceRecommendedProducts();
-        if ($products->count()) {
+        if ($products->exists()) {
             foreach ($products as $product) {
                 if (! $product instanceof Product) {
                     $products->remove($product);
@@ -65,7 +65,7 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
             }
         }
         $products = $this->owner->RecommendedFor();
-        if ($products->count()) {
+        if ($products->exists()) {
             foreach ($products as $product) {
                 if (! $product instanceof Product) {
                     $products->remove($product);
