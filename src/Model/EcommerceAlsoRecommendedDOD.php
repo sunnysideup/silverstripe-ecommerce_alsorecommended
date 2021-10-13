@@ -28,7 +28,7 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
                 GridField::create(
                     'EcommerceRecommendedProducts',
                     'Also Recommended Products',
-                    $this->owner->EcommerceRecommendedProducts(),
+                    $this->getOwner()->EcommerceRecommendedProducts(),
                     $config = GridFieldBasicPageRelationConfig::create()
                 )
             );
@@ -40,7 +40,7 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
                 GridField::create(
                     'RecommendedFor',
                     'Recommended For',
-                    $this->owner->RecommendedFor(),
+                    $this->getOwner()->RecommendedFor(),
                     $config = GridFieldBasicPageRelationConfig::create()
                 )
             );
@@ -54,7 +54,7 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
      */
     public function onAfterWrite()
     {
-        $products = $this->owner->EcommerceRecommendedProducts();
+        $products = $this->getOwner()->EcommerceRecommendedProducts();
         if ($products->exists()) {
             foreach ($products as $product) {
                 if (! $product instanceof Product) {
@@ -64,7 +64,7 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
                 }
             }
         }
-        $products = $this->owner->RecommendedFor();
+        $products = $this->getOwner()->RecommendedFor();
         if ($products->exists()) {
             foreach ($products as $product) {
                 if (! $product instanceof Product) {
@@ -85,10 +85,10 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
     public function EcommerceRecommendedProductsForSale()
     {
         if (EcommerceConfig::inst()->OnlyShowProductsThatCanBePurchased) {
-            return $this->owner->EcommerceRecommendedProducts()->filter(['AllowPurchase' => 1]);
+            return $this->getOwner()->EcommerceRecommendedProducts()->filter(['AllowPurchase' => 1]);
         }
 
-        return $this->owner->EcommerceRecommendedProducts();
+        return $this->getOwner()->EcommerceRecommendedProducts();
     }
 
     /**
@@ -100,9 +100,9 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
     public function RecommendedForForSale()
     {
         if (EcommerceConfig::inst()->OnlyShowProductsThatCanBePurchased) {
-            return $this->owner->RecommendedFor()->filter(['AllowPurchase' => 1]);
+            return $this->getOwner()->RecommendedFor()->filter(['AllowPurchase' => 1]);
         }
 
-        return $this->owner->RecommendedFor();
+        return $this->getOwner()->RecommendedFor();
     }
 }
