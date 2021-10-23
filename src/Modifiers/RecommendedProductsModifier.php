@@ -79,7 +79,7 @@ class RecommendedProductsModifier extends OrderModifier
             }
         }
 
-        return $this->recommendedBuyables->count();
+        return (bool) $this->recommendedBuyables->exists();
     }
 
     /**
