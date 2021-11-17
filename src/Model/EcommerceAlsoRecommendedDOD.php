@@ -5,10 +5,13 @@ namespace Sunnysideup\EcommerceAlsoRecommended\Model;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\GridField\GridField;
 use SilverStripe\Forms\GridField\GridFieldAddExistingAutocompleter;
+use SilverStripe\ORM\DataList;
 use SilverStripe\ORM\DataExtension;
 use Sunnysideup\Ecommerce\Config\EcommerceConfig;
 use Sunnysideup\Ecommerce\Forms\Gridfield\Configs\GridFieldBasicPageRelationConfig;
 use Sunnysideup\Ecommerce\Pages\Product;
+
+use Sunnysideup\Vardump\Vardump;
 
 class EcommerceAlsoRecommendedDOD extends DataExtension
 {
@@ -84,11 +87,10 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
      */
     public function EcommerceRecommendedProductsForSale()
     {
-        if (EcommerceConfig::inst()->OnlyShowProductsThatCanBePurchased) {
-            return $this->getOwner()->EcommerceRecommendedProducts()->filter(['AllowPurchase' => 1]);
-        }
+        $list = $this->getOwner()->EcommerceRecommendedProducts();
+        $list = $this->addAllowPurchaseFilter($list);
 
-        return $this->getOwner()->EcommerceRecommendedProducts();
+        return $list;
     }
 
     /**
@@ -99,10 +101,18 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
      */
     public function RecommendedForForSale()
     {
-        if (EcommerceConfig::inst()->OnlyShowProductsThatCanBePurchased) {
-            return $this->getOwner()->RecommendedFor()->filter(['AllowPurchase' => 1]);
-        }
+        $list = $this->getOwner()->RecommendedFor();
+        $list = $this->addAllowPurchaseFilter($list);
 
-        return $this->getOwner()->RecommendedFor();
+        return $list;
     }
+
+    protected function addAllowPurchaseFilter(DataList $list)
+    {
+        if (EcommerceConfig::inst()->OnlyShowProductsThatCanBePurchased) {
+            $list = $list->filter(['AllowPurchase' => 1]);
+        }
+        return $list;
+    }
+
 }
