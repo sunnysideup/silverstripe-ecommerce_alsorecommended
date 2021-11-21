@@ -53,7 +53,7 @@ class RecommendedProductsModifier extends OrderModifier
             $items = $this->Order()->Items();
             if ($items) {
                 foreach ($items as $item) {
-                    $buyable = $item->Buyable();
+                    $buyable = $item->getBuyableCached();
                     if ($buyable instanceof Product) {
                         $codeOfBuyable = $buyable->ClassName . '.' . $buyable->ID;
                         $inCartIDArray[$codeOfBuyable] = $codeOfBuyable;
@@ -62,7 +62,7 @@ class RecommendedProductsModifier extends OrderModifier
                 foreach ($items as $item) {
                     //get recommended products
                     if ($item) {
-                        $buyable = $item->Buyable();
+                        $buyable = $item->getBuyableCached();
                         if ($buyable instanceof Product) {
                             unset($recommendedProducts);
                             $recommendedProducts = $buyable->EcommerceRecommendedProducts();
