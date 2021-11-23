@@ -12,6 +12,7 @@ use Sunnysideup\Ecommerce\Forms\Gridfield\Configs\GridFieldBasicPageRelationConf
 use Sunnysideup\Ecommerce\Pages\Product;
 
 use Sunnysideup\Vardump\Vardump;
+use Sunnysideup\Ecommerce\Forms\Gridfield\Configs\GridFieldConfigForProducts;
 
 class EcommerceAlsoRecommendedDOD extends DataExtension
 {
@@ -32,11 +33,9 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
                     'EcommerceRecommendedProducts',
                     'Also Recommended Products',
                     $this->getOwner()->EcommerceRecommendedProducts(),
-                    $config = GridFieldBasicPageRelationConfig::create()
+                    GridFieldConfigForProducts::class
                 )
             );
-            $component = $config->getComponentByType(GridFieldAddExistingAutocompleter::class);
-            $component->setSearchFields(['InternalItemID', 'Title']);
 
             $fields->addFieldToTab(
                 'Root.Links',
@@ -44,11 +43,9 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
                     'RecommendedFor',
                     'Recommended For',
                     $this->getOwner()->RecommendedFor(),
-                    $config = GridFieldBasicPageRelationConfig::create()
+                    GridFieldConfigForProducts::class
                 )
             );
-            $component = $config->getComponentByType(GridFieldAddExistingAutocompleter::class);
-            $component->setSearchFields(['InternalItemID', 'Title']);
         }
     }
 
