@@ -33,7 +33,7 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
                     'EcommerceRecommendedProducts',
                     'Also Recommended Products',
                     $this->getOwner()->EcommerceRecommendedProducts(),
-                    GridFieldConfigForProducts::class
+                    GridFieldConfigForProducts::create()
                 )
             );
 
@@ -43,7 +43,7 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
                     'RecommendedFor',
                     'Recommended For',
                     $this->getOwner()->RecommendedFor(),
-                    GridFieldConfigForProducts::class
+                    GridFieldConfigForProducts::create()
                 )
             );
         }
