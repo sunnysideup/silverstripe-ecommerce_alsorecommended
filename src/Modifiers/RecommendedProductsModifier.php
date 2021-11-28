@@ -50,7 +50,7 @@ class RecommendedProductsModifier extends OrderModifier
         if (! $this->recommendedBuyables) {
             $this->recommendedBuyables = new ArrayList();
             $inCartIDArray = [];
-            $items = $this->Order()->Items();
+            $items = $this->orderCached()->Items();
             if ($items) {
                 foreach ($items as $item) {
                     $buyable = $item->getBuyableCached();
