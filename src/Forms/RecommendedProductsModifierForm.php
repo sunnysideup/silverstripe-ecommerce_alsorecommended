@@ -109,7 +109,7 @@ class RecommendedProductsModifierForm extends OrderModifierForm
                 list($className, $id) = explode('|', $key);
 
                 if (class_exists($className) && (int) $id === $id) {
-                    $buyable = $className::get()->byID($id);
+                    $buyable = $className::get_by_id($id);
                     if ($buyable && $buyable->canPurchase()) {
                         ++$count;
                         ShoppingCart::singleton()->addBuyable($buyable);
