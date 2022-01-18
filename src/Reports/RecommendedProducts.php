@@ -33,7 +33,7 @@ class RecommendedProducts extends Report
      */
     public function title()
     {
-        return 'E-commerce: Products: recommended products (you can filter for the ones that are not for sale)';
+        return 'E-commerce: Products: products recommended by other products';
     }
 
     /**
