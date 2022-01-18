@@ -14,7 +14,7 @@ use Sunnysideup\Ecommerce\Pages\Product;
  * @package: ecommerce
  * @sub-package: reports
  */
-class ProductsWithNotForSaleRecommendedProducts extends Report
+class ProductsWithRecommendedProducts extends Report
 {
     use EcommerceProductReportTrait;
 
@@ -33,7 +33,7 @@ class ProductsWithNotForSaleRecommendedProducts extends Report
      */
     public function title()
     {
-        return 'E-commerce: Products: recommended products (you can filter for the ones that are not for sale)';
+        return 'E-commerce: Products: products with recommended products';
     }
 
     /**
@@ -46,7 +46,7 @@ class ProductsWithNotForSaleRecommendedProducts extends Report
             ->sort('Title', 'ASC')
             ->leftJoin(
                 'Product_EcommerceRecommendedProducts',
-                '"Product"."ID" = Product_EcommerceRecommendedProducts.ChildID'
+                '"Product"."ID" = Product_EcommerceRecommendedProducts.ProductID'
             )
         ;
     }
