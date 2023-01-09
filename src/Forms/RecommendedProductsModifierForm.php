@@ -93,7 +93,7 @@ class RecommendedProductsModifierForm extends OrderModifierForm
         $actions->push(FormAction::create('processOrderModifier', $this->config()->get('add_button_text')));
         // 6) Form construction
         parent::__construct($optionalController, $name, $fields, $actions, $optionalValidator);
-        Requirements::javascript('silverstripe/admin: thirdparty/jquery/jquery.js');
+        Requirements::javascript('https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js');
         //Requirements::block(THIRDPARTY_DIR."/jquery/jquery.js");
         //Requirements::javascript(Director::protocol()."ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js");
         Requirements::javascript('sunnysideup/ecommerce_alsorecommended: client/javascript/RecommendedProductsModifier.js');
