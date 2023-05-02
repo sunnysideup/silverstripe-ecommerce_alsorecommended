@@ -12,12 +12,8 @@ use Sunnysideup\Ecommerce\Pages\Product;
 use Sunnysideup\EcommerceAlsoRecommended\Forms\RecommendedProductsModifierForm;
 
 /**
- * @author Nicolaas [at] sunnysideup.co.nz
- * @package: ecommerce
- * @sub-package: ecommerce_modifiers
- * @description: shows a list of recommended products
- * the product page / dataobject need to have a function RecommendedProductsForCart
- * which returns an array of IDs
+ * Class \Sunnysideup\EcommerceAlsoRecommended\Modifiers\RecommendedProductsModifier
+ *
  */
 class RecommendedProductsModifier extends OrderModifier
 {
