@@ -30,24 +30,22 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
     public function updateCMSFields(FieldList $fields)
     {
         if ($this->owner instanceof Product) {
-            $fields->addFieldToTab(
-                'Root.Links',
-                GridField::create(
-                    'EcommerceRecommendedProducts',
-                    'Also Recommended Products',
-                    $this->getOwner()->EcommerceRecommendedProducts(),
-                    GridFieldConfigForProducts::create()
-                )
-            );
-
-            $fields->addFieldToTab(
-                'Root.Links',
-                GridField::create(
-                    'RecommendedFor',
-                    'Recommended For',
-                    $this->getOwner()->RecommendedFor(),
-                    GridFieldConfigForProducts::create()
-                )
+            $fields->addFieldsToTab(
+                'Root.Recommend',
+                [
+                    GridField::create(
+                        'EcommerceRecommendedProducts',
+                        'Also Recommended Products',
+                        $this->getOwner()->EcommerceRecommendedProducts(),
+                        GridFieldConfigForProducts::create()
+                    ),
+                    GridField::create(
+                        'RecommendedFor',
+                        'Recommended For',
+                        $this->getOwner()->RecommendedFor(),
+                        GridFieldConfigForProducts::create()
+                    ),
+                ]
             );
         }
     }
