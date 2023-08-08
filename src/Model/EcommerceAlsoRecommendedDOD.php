@@ -26,6 +26,14 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
     private static $belongs_many_many = [
         'RecommendedFor' => Product::class,
     ];
+    private static $belongs_many_manyExtraFields = [
+        'RecommendedFor' => [
+            'AutomaticallyAdded' => 'Boolean',
+        ],
+        'EcommerceRecommendedProducts' => [
+            'AutomaticallyAdded' => 'Boolean',
+        ],
+    ];
 
     public function updateCMSFields(FieldList $fields)
     {
