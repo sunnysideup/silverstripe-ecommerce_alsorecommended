@@ -37,7 +37,7 @@ class FindAlsoRecommended extends BuildTask
     private static $segment = 'FindAlsoRecommended';
 
     private static $min_percentage_to_be_included = 0.1;
-    private static $min_absolute_count_to_be_included = 3;
+    private static $min_absolute_count_to_be_included = 2;
 
     /**
      * run in verbose mode.
