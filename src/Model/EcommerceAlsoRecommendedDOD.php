@@ -37,13 +37,13 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
                     GridField::create(
                         'EcommerceRecommendedProducts',
                         'Also Recommended Products',
-                        $owner()->EcommerceRecommendedProducts(),
+                        $owner->EcommerceRecommendedProducts(),
                         GridFieldConfigForProducts::create()
                     ),
                     GridField::create(
                         'RecommendedFor',
                         'Recommended For',
-                        $owner()->RecommendedFor(),
+                        $owner->RecommendedFor(),
                         GridFieldConfigForProducts::create()
                     ),
                 ]
@@ -61,7 +61,7 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
     public function EcommerceRecommendedProductsForSale()
     {
         $owner = $this->getOwner();
-        $list = $owner()->EcommerceRecommendedProducts();
+        $list = $owner->EcommerceRecommendedProducts();
 
         return $this->addAllowPurchaseFilter($list);
     }
@@ -75,7 +75,7 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
     public function RecommendedForForSale()
     {
         $owner = $this->getOwner();
-        $list = $owner()->RecommendedFor();
+        $list = $owner->RecommendedFor();
 
         return $this->addAllowPurchaseFilter($list);
     }
