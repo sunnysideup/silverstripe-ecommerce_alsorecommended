@@ -26,31 +26,24 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
     private static $belongs_many_many = [
         'RecommendedFor' => Product::class,
     ];
-    private static $belongs_many_manyExtraFields = [
-        'RecommendedFor' => [
-            'AutomaticallyAdded' => 'Boolean',
-        ],
-        'EcommerceRecommendedProducts' => [
-            'AutomaticallyAdded' => 'Boolean',
-        ],
-    ];
 
     public function updateCMSFields(FieldList $fields)
     {
-        if ($this->owner instanceof Product) {
+        $owner = $this->getOwner();
+        if ($owner instanceof Product) {
             $fields->addFieldsToTab(
                 'Root.Recommend',
                 [
                     GridField::create(
                         'EcommerceRecommendedProducts',
                         'Also Recommended Products',
-                        $this->getOwner()->EcommerceRecommendedProducts(),
+                        $owner()->EcommerceRecommendedProducts(),
                         GridFieldConfigForProducts::create()
                     ),
                     GridField::create(
                         'RecommendedFor',
                         'Recommended For',
-                        $this->getOwner()->RecommendedFor(),
+                        $owner()->RecommendedFor(),
                         GridFieldConfigForProducts::create()
                     ),
                 ]
@@ -58,32 +51,6 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
         }
     }
 
-    /**
-     * small cleanup.
-     */
-    public function onAfterWrite()
-    {
-        $products = $this->getOwner()->EcommerceRecommendedProducts();
-        if ($products->exists()) {
-            foreach ($products as $product) {
-                if (! $product instanceof Product) {
-                    $products->remove($product);
-                } elseif (! $product->AllowPurchase) {
-                    $products->remove($product);
-                }
-            }
-        }
-        $products = $this->getOwner()->RecommendedFor();
-        if ($products->exists()) {
-            foreach ($products as $product) {
-                if (! $product instanceof Product) {
-                    $products->remove($product);
-                } elseif (! $product->AllowPurchase) {
-                    $products->remove($product);
-                }
-            }
-        }
-    }
 
     /**
      * only returns the products that are for sale
@@ -93,7 +60,8 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
      */
     public function EcommerceRecommendedProductsForSale()
     {
-        $list = $this->getOwner()->EcommerceRecommendedProducts();
+        $owner = $this->getOwner();
+        $list = $owner()->EcommerceRecommendedProducts();
 
         return $this->addAllowPurchaseFilter($list);
     }
@@ -106,7 +74,8 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
      */
     public function RecommendedForForSale()
     {
-        $list = $this->getOwner()->RecommendedFor();
+        $owner = $this->getOwner();
+        $list = $owner()->RecommendedFor();
 
         return $this->addAllowPurchaseFilter($list);
     }
