@@ -61,7 +61,8 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
     public function EcommerceRecommendedProductsForSale()
     {
         $owner = $this->getOwner();
-        $list = $owner->EcommerceRecommendedProducts();
+        $list = $owner->EcommerceRecommendedProducts()
+            ->sort(['PopularityRank' => 'ASC']);
 
         return $this->addAllowPurchaseFilter($list);
     }
@@ -75,7 +76,8 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
     public function RecommendedForForSale()
     {
         $owner = $this->getOwner();
-        $list = $owner->RecommendedFor();
+        $list = $owner->RecommendedFor()
+            ->sort(['PopularityRank' => 'ASC']);
 
         return $this->addAllowPurchaseFilter($list);
     }
