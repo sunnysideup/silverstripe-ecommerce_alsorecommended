@@ -62,7 +62,8 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
     {
         $owner = $this->getOwner();
         $list = $owner->EcommerceRecommendedProducts()
-            ->sort(['PopularityRank' => 'ASC']);
+            ->sort(['PopularityRank' => 'ASC'])
+            ->limit(20);
 
         return $this->addAllowPurchaseFilter($list);
     }
@@ -77,7 +78,9 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
     {
         $owner = $this->getOwner();
         $list = $owner->RecommendedFor()
-            ->sort(['PopularityRank' => 'ASC']);
+            ->sort(['PopularityRank' => 'ASC'])
+            ->limit(20)
+            ->exclude(['ID' => $owner->EcommerceRecommendedProducts()->columnUnique()]);
 
         return $this->addAllowPurchaseFilter($list);
     }
