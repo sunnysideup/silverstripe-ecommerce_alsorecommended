@@ -27,6 +27,8 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
         'RecommendedFor' => Product::class,
     ];
 
+    private static $max_number_of_recommended_products = 20;
+
     public function updateCMSFields(FieldList $fields)
     {
         $owner = $this->getOwner();
@@ -63,7 +65,7 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
         $owner = $this->getOwner();
         $list = $owner->EcommerceRecommendedProducts()
             ->sort(['PopularityRank' => 'ASC'])
-            ->limit(20);
+            ->limit($this->owner->config()->get('max_number_of_recommended_products'));
 
         return $this->addAllowPurchaseFilter($list);
     }
@@ -79,8 +81,8 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
         $owner = $this->getOwner();
         $list = $owner->RecommendedFor()
             ->sort(['PopularityRank' => 'ASC'])
-            ->limit(20)
-            ->exclude(['ID' => $owner->EcommerceRecommendedProducts()->columnUnique()]);
+            ->exclude(['ID' => $owner->EcommerceRecommendedProducts()->columnUnique()])
+            ->limit($this->owner->config()->get('max_number_of_recommended_products'));
 
         return $this->addAllowPurchaseFilter($list);
     }
