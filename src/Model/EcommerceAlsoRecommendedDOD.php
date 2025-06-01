@@ -6,6 +6,7 @@ use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\GridField\GridField;
 use SilverStripe\ORM\DataExtension;
 use SilverStripe\ORM\DataList;
+use Sunnysideup\Ecommerce\Api\ArrayMethods;
 use Sunnysideup\Ecommerce\Config\EcommerceConfig;
 use Sunnysideup\Ecommerce\Forms\Gridfield\Configs\GridFieldConfigForProducts;
 use Sunnysideup\Ecommerce\Pages\Product;
@@ -81,7 +82,7 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
         $owner = $this->getOwner();
         $list = $owner->RecommendedFor()
             ->sort(['PopularityRank' => 'ASC'])
-            ->exclude(['ID' => $owner->EcommerceRecommendedProducts()->columnUnique()])
+            ->exclude(['ID' => ArrayMethods::filter_array($owner->EcommerceRecommendedProducts()->columnUnique())])
             ->limit($this->owner->config()->get('max_number_of_recommended_products'));
 
         return $this->addAllowPurchaseFilter($list);
