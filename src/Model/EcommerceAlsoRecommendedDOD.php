@@ -4,8 +4,10 @@ namespace Sunnysideup\EcommerceAlsoRecommended\Model;
 
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\GridField\GridField;
+use SilverStripe\Forms\GridField\GridFieldAddExistingAutocompleter;
 use SilverStripe\ORM\DataExtension;
 use SilverStripe\ORM\DataList;
+use SilverStripe\Versioned\GridFieldArchiveAction;
 use Sunnysideup\Ecommerce\Api\ArrayMethods;
 use Sunnysideup\Ecommerce\Config\EcommerceConfig;
 use Sunnysideup\Ecommerce\Forms\Gridfield\Configs\GridFieldConfigForProducts;
@@ -42,12 +44,14 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
                         'Also Recommended Products',
                         $owner->EcommerceRecommendedProducts(),
                         GridFieldConfigForProducts::create()
+                            ->removeComponentsByType(GridFieldArchiveAction::class)
                     ),
                     GridField::create(
                         'RecommendedFor',
                         'Recommended For',
                         $owner->RecommendedFor(),
                         GridFieldConfigForProducts::create()
+                            ->removeComponentsByType(GridFieldArchiveAction::class)
                     ),
                 ]
             );
