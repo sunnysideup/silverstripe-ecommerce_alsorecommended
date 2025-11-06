@@ -36,25 +36,27 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
     {
         $owner = $this->getOwner();
         if ($owner instanceof Product) {
-            $fields->addFieldsToTab(
-                'Root.Recommend',
-                [
-                    GridField::create(
-                        'EcommerceRecommendedProducts',
-                        'Also Recommended Products',
-                        $owner->EcommerceRecommendedProducts(),
-                        GridFieldConfigForProducts::create()
-                            ->removeComponentsByType(GridFieldArchiveAction::class)
-                    ),
-                    GridField::create(
-                        'RecommendedFor',
-                        'Recommended For',
-                        $owner->RecommendedFor(),
-                        GridFieldConfigForProducts::create()
-                            ->removeComponentsByType(GridFieldArchiveAction::class)
-                    ),
-                ]
-            );
+            if ($owner->isInDB()) {
+                $fields->addFieldsToTab(
+                    'Root.Recommend',
+                    [
+                        GridField::create(
+                            'EcommerceRecommendedProducts',
+                            'Also Recommended Products',
+                            $owner->EcommerceRecommendedProducts(),
+                            GridFieldConfigForProducts::create()
+                                ->removeComponentsByType(GridFieldArchiveAction::class)
+                        ),
+                        GridField::create(
+                            'RecommendedFor',
+                            'Recommended For',
+                            $owner->RecommendedFor(),
+                            GridFieldConfigForProducts::create()
+                                ->removeComponentsByType(GridFieldArchiveAction::class)
+                        ),
+                    ]
+                );
+            }
         }
     }
 
