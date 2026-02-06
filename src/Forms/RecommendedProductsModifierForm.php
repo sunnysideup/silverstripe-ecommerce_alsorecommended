@@ -40,9 +40,6 @@ class RecommendedProductsModifierForm extends OrderModifierForm
 
     public function __construct($optionalController, string $name, FieldList $fields, FieldList $actions, $optionalValidator = null, $recommendedBuyables = null)
     {
-        if (! ($fields instanceof FieldList)) {
-            $fields = FieldList::create();
-        }
         $productFieldList = new FieldList();
         $recommendedBuyables = $recommendedBuyables->filter(['AllowPurchase' => 1]);
         if ($recommendedBuyables->exists()) {
@@ -69,7 +66,7 @@ class RecommendedProductsModifierForm extends OrderModifierForm
                             $imagePart = '<span class="secondPart"><img src="' . $imageLink . '" alt="' . Convert::raw2att($buyable->Title) . '" /></span>';
                         }
                     }
-                    if (! $imagePart) {
+                    if ($imagePart === '' || $imagePart === '0') {
                         $imagePart = '<span class="secondPart noImage">[no image available for ' . $buyable->Title . ']</span>';
                     }
                     $priceAsMoney = EcommerceCurrency::get_money_object_from_order_currency($buyable->calculatedPrice());
@@ -92,9 +89,6 @@ class RecommendedProductsModifierForm extends OrderModifierForm
                 ->addExtraClass('recommendedProductsHolder')
 
         );
-        if (! $actions instanceof FieldList) {
-            $actions = FieldList::create();
-        }
         $actions->push(FormAction::create('processOrderModifier', $this->config()->get('add_button_text')));
         // 6) Form construction
         parent::__construct($optionalController, $name, $fields, $actions, $optionalValidator);
@@ -126,9 +120,9 @@ class RecommendedProductsModifierForm extends OrderModifierForm
                 }
             }
         }
-        if ($error) {
+        if ($error !== 0) {
             ShoppingCart::singleton()->addMessage(_t('RecommendedProductsModifierForm.ERROR_UPDATING', 'There was an error updating the cart', 'bad'));
-        } elseif ($count) {
+        } elseif ($count !== 0) {
             ShoppingCart::singleton()->addMessage(_t('RecommendedProductsModifierForm.CART_UPDATED', 'Cart updated (' . $count . ')', 'good'));
         } else {
             ShoppingCart::singleton()->addMessage(_t('RecommendedProductsModifierForm.NOTHING_TO_ADD', 'Nothing to add', 'warning'));
