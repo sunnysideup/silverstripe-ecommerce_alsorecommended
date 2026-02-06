@@ -13,7 +13,6 @@ use Sunnysideup\EcommerceAlsoRecommended\Forms\RecommendedProductsModifierForm;
 
 /**
  * Class \Sunnysideup\EcommerceAlsoRecommended\Modifiers\RecommendedProductsModifier
- *
  */
 class RecommendedProductsModifier extends OrderModifier
 {
@@ -65,7 +64,7 @@ class RecommendedProductsModifier extends OrderModifier
                             $recommendedProducts = $buyable->EcommerceRecommendedProducts();
                             foreach ($recommendedProducts as $recommendedProduct) {
                                 $codeOfRecommendedProduct = $recommendedProduct->ClassName . '.' . $recommendedProduct->ID;
-                                if (!in_array($codeOfRecommendedProduct, $inCartIDArray, true) && ($recommendedProduct->canPurchase() && $recommendedProduct->AllowPurchase)) {
+                                if (! in_array($codeOfRecommendedProduct, $inCartIDArray, true) && ($recommendedProduct->canPurchase() && $recommendedProduct->AllowPurchase)) {
                                     $this->recommendedBuyables->push($recommendedProduct);
                                 }
                             }

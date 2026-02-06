@@ -4,7 +4,6 @@ namespace Sunnysideup\EcommerceAlsoRecommended\Model;
 
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\GridField\GridField;
-use SilverStripe\Forms\GridField\GridFieldAddExistingAutocompleter;
 use SilverStripe\ORM\DataExtension;
 use SilverStripe\ORM\DataList;
 use SilverStripe\Versioned\GridFieldArchiveAction;
@@ -57,7 +56,6 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
             );
         }
     }
-
 
     /**
      * only returns the products that are for sale

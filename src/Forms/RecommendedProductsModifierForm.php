@@ -87,7 +87,6 @@ class RecommendedProductsModifierForm extends OrderModifierForm
             CompositeField::create($productFieldList)
                 ->setName('Products')
                 ->addExtraClass('recommendedProductsHolder')
-
         );
         $actions->push(FormAction::create('processOrderModifier', $this->config()->get('add_button_text')));
         // 6) Form construction
