@@ -2,11 +2,11 @@
 
 namespace Sunnysideup\EcommerceAlsoRecommended\Modifiers;
 
+use Override;
+use SilverStripe\Model\List\ArrayList;
+use SilverStripe\Forms\Validation\Validator;
 use SilverStripe\Control\Controller;
 use SilverStripe\Forms\FieldList;
-use SilverStripe\Forms\Form;
-use SilverStripe\Forms\Validator;
-use SilverStripe\ORM\ArrayList;
 use Sunnysideup\Ecommerce\Model\OrderModifier;
 use Sunnysideup\Ecommerce\Pages\Product;
 use Sunnysideup\EcommerceAlsoRecommended\Forms\RecommendedProductsModifierForm;
@@ -16,6 +16,8 @@ use Sunnysideup\EcommerceAlsoRecommended\Forms\RecommendedProductsModifierForm;
  */
 class RecommendedProductsModifier extends OrderModifier
 {
+    private static $table_name = 'RecommendedProductsModifier';
+
     //--------------------------------------------------------------------  *** static functions
     // ######################################## *** form functions (e. g. Showform and getform)
 
@@ -27,12 +29,14 @@ class RecommendedProductsModifier extends OrderModifier
 
     private static $plural_name = 'Recommended Products';
 
+    #[Override]
     public function i18n_singular_name()
     {
         return _t('RecommendedProductsModifier.SINGULAR_NAME', 'Recommended Product');
     }
 
-    public function i18n_plural_name()
+    #[Override]
+    public function plural_name()
     {
         return _t('RecommendedProductsModifier.PLURAL_NAME', 'Recommended Products');
     }
@@ -40,10 +44,11 @@ class RecommendedProductsModifier extends OrderModifier
     /**
      * standard Modifier Method.
      */
+    #[Override]
     public function ShowForm(): bool
     {
         if (! $this->recommendedBuyables) {
-            $this->recommendedBuyables = new ArrayList();
+            $this->recommendedBuyables = ArrayList::create();
             $inCartIDArray = [];
             $order = $this->getOrderCached();
             if ($order && $order->getTotalItems()) {
@@ -55,6 +60,7 @@ class RecommendedProductsModifier extends OrderModifier
                         $inCartIDArray[$codeOfBuyable] = $codeOfBuyable;
                     }
                 }
+
                 foreach ($items as $item) {
                     //get recommended products
                     if ($item) {
@@ -81,28 +87,24 @@ class RecommendedProductsModifier extends OrderModifier
      * Should the form be included in the editable form
      * on the checkout page?
      */
+    #[Override]
     public function ShowFormInEditableOrderTable(): bool
     {
         return false;
     }
 
+    #[Override]
     public function getModifierForm(Controller $optionalController = null, Validator $optionalValidator = null): ?RecommendedProductsModifierForm
     {
         if ($this->ShowForm()) {
-            return new RecommendedProductsModifierForm(
-                $optionalController,
-                'RecommendedProducts',
-                FieldList::create(),
-                FieldList::create(),
-                $optionalValidator,
-                $this->recommendedBuyables
-            );
+            return RecommendedProductsModifierForm::create($optionalController, 'RecommendedProducts', FieldList::create(), FieldList::create(), $optionalValidator, $this->recommendedBuyables);
         }
 
         return null;
     }
 
     //-------------------------------------------------------------------- *** display functions
+    #[Override]
     public function ShowInTable(): bool
     {
         return false;
@@ -123,17 +125,20 @@ class RecommendedProductsModifier extends OrderModifier
     }
 
     // -------------------------------------------------------------------- *** table values
+    #[Override]
     protected function LiveCalculatedTotal()
     {
         return 0;
     }
 
+    #[Override]
     protected function LiveTableValue()
     {
         return 0;
     }
 
     //-------------------------------------------------------------------- *** table titles
+    #[Override]
     protected function LiveName()
     {
         return $this->i18n_singular_name();

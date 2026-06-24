@@ -2,6 +2,7 @@
 
 namespace Sunnysideup\EcommerceAlsoRecommended\Forms;
 
+use SilverStripe\Model\ArrayData;
 use SilverStripe\Control\Controller;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Core\Convert;
@@ -12,7 +13,6 @@ use SilverStripe\Forms\FormAction;
 use SilverStripe\Forms\HeaderField;
 use SilverStripe\Forms\LiteralField;
 use SilverStripe\ORM\FieldType\DBField;
-use SilverStripe\View\ArrayData;
 use SilverStripe\View\Requirements;
 use Sunnysideup\Ecommerce\Api\ShoppingCart;
 use Sunnysideup\Ecommerce\Forms\OrderModifierForm;
@@ -40,7 +40,7 @@ class RecommendedProductsModifierForm extends OrderModifierForm
 
     public function __construct($optionalController, string $name, FieldList $fields, FieldList $actions, $optionalValidator = null, $recommendedBuyables = null)
     {
-        $productFieldList = new FieldList();
+        $productFieldList = FieldList::create();
         $recommendedBuyables = $recommendedBuyables->filter(['AllowPurchase' => 1]);
         if ($recommendedBuyables->exists()) {
             $fields->push(HeaderField::create($this->config()->get('something_recommended_text')));
@@ -48,14 +48,12 @@ class RecommendedProductsModifierForm extends OrderModifierForm
                 $template = Config::inst()->get(RecommendedProductsModifierForm::class, 'product_template');
                 if ($template) {
                     $checkboxID = $buyable->ClassName . '|' . $buyable->ID;
-                    $arrayData = new ArrayData(
-                        [
-                            'Buyable' => $buyable,
-                            'CheckboxID' => $checkboxID,
-                            'Checkbox' => new CheckboxField($checkboxID, _t('RecommendedProductsModifierForm.ADD', 'add')),
-                        ]
-                    );
-                    $productFieldList->push(new LiteralField('Buyable_' . $buyable->ID, $arrayData->RenderWith($template)));
+                    $arrayData = ArrayData::create([
+                        'Buyable' => $buyable,
+                        'CheckboxID' => $checkboxID,
+                        'Checkbox' => CheckboxField::create($checkboxID, _t('RecommendedProductsModifierForm.ADD', 'add')),
+                    ]);
+                    $productFieldList->push(LiteralField::create('Buyable_' . $buyable->ID, $arrayData->RenderWith($template)));
                 } else {
                     //foreach product in cart get recommended products
                     $imagePart = '';
@@ -66,23 +64,23 @@ class RecommendedProductsModifierForm extends OrderModifierForm
                             $imagePart = '<span class="secondPart"><img src="' . $imageLink . '" alt="' . Convert::raw2att($buyable->Title) . '" /></span>';
                         }
                     }
+
                     if ($imagePart === '' || $imagePart === '0') {
                         $imagePart = '<span class="secondPart noImage">[no image available for ' . $buyable->Title . ']</span>';
                     }
+
                     $priceAsMoney = EcommerceCurrency::get_money_object_from_order_currency($buyable->calculatedPrice());
                     $pricePart = '<span class="firstPart">' . $priceAsMoney->NiceLongSymbol() . '</span>';
                     $title = '<a href="' . $buyable->Link() . '">' . $buyable->Title . '</a>' . $pricePart . $imagePart . '';
-                    $newField = new CheckboxField(
-                        $buyable->ClassName . '|' . $buyable->ID,
-                        DBField::create_field(
-                            'HTMLText',
-                            $title
-                        )
-                    );
+                    $newField = CheckboxField::create($buyable->ClassName . '|' . $buyable->ID, DBField::create_field(
+                        'HTMLText',
+                        $title
+                    ));
                     $fields->push($newField);
                 }
             }
         }
+
         $fields->push(
             CompositeField::create($productFieldList)
                 ->setName('Products')
@@ -104,7 +102,7 @@ class RecommendedProductsModifierForm extends OrderModifierForm
         $error = 0;
         foreach ($data as $key => $value) {
             if (1 === $value) {
-                list($className, $id) = explode('|', $key);
+                [$className, $id] = explode('|', (string) $key);
 
                 if (class_exists($className) && (int) $id === $id) {
                     $buyable = $className::get_by_id($id);
@@ -119,6 +117,7 @@ class RecommendedProductsModifierForm extends OrderModifierForm
                 }
             }
         }
+
         if ($error !== 0) {
             ShoppingCart::singleton()->addMessage(_t('RecommendedProductsModifierForm.ERROR_UPDATING', 'There was an error updating the cart', 'bad'));
         } elseif ($count !== 0) {
@@ -126,6 +125,7 @@ class RecommendedProductsModifierForm extends OrderModifierForm
         } else {
             ShoppingCart::singleton()->addMessage(_t('RecommendedProductsModifierForm.NOTHING_TO_ADD', 'Nothing to add', 'warning'));
         }
+
         Controller::curr()->redirectBack();
     }
 }
