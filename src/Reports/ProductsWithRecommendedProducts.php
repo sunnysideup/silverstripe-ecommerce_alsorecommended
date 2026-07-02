@@ -2,6 +2,7 @@
 
 namespace Sunnysideup\Ecommerce\Reports;
 
+use Override;
 use SilverStripe\Reports\Report;
 use Sunnysideup\Ecommerce\Pages\Product;
 
@@ -29,6 +30,7 @@ class ProductsWithRecommendedProducts extends Report
     /**
      * @return string
      */
+    #[Override]
     public function title()
     {
         return 'E-commerce: Products: products with recommended products';

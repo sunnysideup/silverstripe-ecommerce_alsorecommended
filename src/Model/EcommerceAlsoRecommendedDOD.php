@@ -2,9 +2,10 @@
 
 namespace Sunnysideup\EcommerceAlsoRecommended\Model;
 
+use SilverStripe\Core\Extension;
+use SilverStripe\ORM\ManyManyList;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\GridField\GridField;
-use SilverStripe\ORM\DataExtension;
 use SilverStripe\ORM\DataList;
 use SilverStripe\Versioned\GridFieldArchiveAction;
 use Sunnysideup\Ecommerce\Api\ArrayMethods;
@@ -15,11 +16,11 @@ use Sunnysideup\Ecommerce\Pages\Product;
 /**
  * Class \Sunnysideup\EcommerceAlsoRecommended\Model\EcommerceAlsoRecommendedDOD
  *
- * @property \Sunnysideup\Ecommerce\Pages\Product|\Sunnysideup\EcommerceAlsoRecommended\Model\EcommerceAlsoRecommendedDOD $owner
- * @method \SilverStripe\ORM\ManyManyList|\Sunnysideup\Ecommerce\Pages\Product[] EcommerceRecommendedProducts()
- * @method \SilverStripe\ORM\ManyManyList|\Sunnysideup\Ecommerce\Pages\Product[] RecommendedFor()
+ * @property Product|EcommerceAlsoRecommendedDOD $owner
+ * @method ManyManyList|Product[] EcommerceRecommendedProducts()
+ * @method ManyManyList|Product[] RecommendedFor()
  */
-class EcommerceAlsoRecommendedDOD extends DataExtension
+class EcommerceAlsoRecommendedDOD extends Extension
 {
     private static $many_many = [
         'EcommerceRecommendedProducts' => Product::class,
@@ -61,14 +62,14 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
      * only returns the products that are for sale
      * if only those need to be showing.
      *
-     * @return \SilverStripe\ORM\DataList
+     * @return DataList
      */
     public function EcommerceRecommendedProductsForSale()
     {
         $owner = $this->getOwner();
         $list = $owner->EcommerceRecommendedProducts()
             ->sort(['PopularityRank' => 'ASC'])
-            ->limit($this->owner->config()->get('max_number_of_recommended_products'));
+            ->limit($this->getOwner()->config()->get('max_number_of_recommended_products'));
 
         return $this->addAllowPurchaseFilter($list);
     }
@@ -77,7 +78,7 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
      * only returns the products that are for sale
      * if only those need to be showing.
      *
-     * @return \SilverStripe\ORM\DataList
+     * @return DataList
      */
     public function RecommendedForForSale()
     {
@@ -85,7 +86,7 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
         $list = $owner->RecommendedFor()
             ->sort(['PopularityRank' => 'ASC'])
             ->exclude(['ID' => ArrayMethods::filter_array($owner->EcommerceRecommendedProducts()->columnUnique())])
-            ->limit($this->owner->config()->get('max_number_of_recommended_products'));
+            ->limit($this->getOwner()->config()->get('max_number_of_recommended_products'));
 
         return $this->addAllowPurchaseFilter($list);
     }

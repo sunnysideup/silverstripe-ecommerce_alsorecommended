@@ -1,4 +1,5 @@
-SilverStripe\ORM\DatabaseAdmin:
+
+SilverStripe\Dev\DbBuild:
   classname_value_remapping:
     RecommendedProductsModifier_Form: Sunnysideup\EcommerceAlsoRecommended\Forms\RecommendedProductsModifierForm
     RecommendedProductsModifier: Sunnysideup\EcommerceAlsoRecommended\Modifiers\RecommendedProductsModifier
