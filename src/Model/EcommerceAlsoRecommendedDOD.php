@@ -6,11 +6,13 @@ use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\GridField\GridField;
 use SilverStripe\ORM\DataExtension;
 use SilverStripe\ORM\DataList;
+use SilverStripe\ORM\DB;
 use SilverStripe\Versioned\GridFieldArchiveAction;
 use Sunnysideup\Ecommerce\Api\ArrayMethods;
 use Sunnysideup\Ecommerce\Config\EcommerceConfig;
 use Sunnysideup\Ecommerce\Forms\Gridfield\Configs\GridFieldConfigForProducts;
 use Sunnysideup\Ecommerce\Pages\Product;
+use UndefinedOffset\SortableGridField\Forms\GridFieldSortableRows;
 
 /**
  * Class \Sunnysideup\EcommerceAlsoRecommended\Model\EcommerceAlsoRecommendedDOD
@@ -29,6 +31,26 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
         'RecommendedFor' => Product::class,
     ];
 
+    private static $many_many_extraFields = [
+        'EcommerceRecommendedProducts' => [
+            'SortOrder' => 'Int',
+        ],
+    ];
+
+    public function augmentDatabase(): void
+    {
+
+        // Default join table format is {OwnerClass}_{RelationName}
+        DB::require_index(
+            'Product_EcommerceRecommendedProducts',
+            'SortOrder',
+            [
+                'type' => 'index',
+                'columns' => ['SortOrder'],
+            ]
+        );
+    }
+
     private static $max_number_of_recommended_products = 20;
 
     public function updateCMSFields(FieldList $fields)
@@ -40,17 +62,16 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
                 [
                     GridField::create(
                         'EcommerceRecommendedProducts',
-                        'Also Recommended Products',
+                        'Also Recommended Products (if you buy this, also get ...)',
                         $owner->EcommerceRecommendedProducts(),
                         GridFieldConfigForProducts::create()
-                            ->removeComponentsByType(GridFieldArchiveAction::class)
+                            ->addComponent(new GridFieldSortableRows('SortOrder'))
                     ),
                     GridField::create(
                         'RecommendedFor',
-                        'Recommended For',
+                        'Recommended For (if you bought something else, we would recommend this)',
                         $owner->RecommendedFor(),
                         GridFieldConfigForProducts::create()
-                            ->removeComponentsByType(GridFieldArchiveAction::class)
                     ),
                 ]
             );
@@ -98,4 +119,11 @@ class EcommerceAlsoRecommendedDOD extends DataExtension
 
         return $list;
     }
+
+    public function EcommerceRecommendedProducts()
+    {
+        $owner = $this->getOwner();
+        return $owner->getManyManyComponents('EcommerceRecommendedProducts')->sort('SortOrder');
+    }
+
 }
